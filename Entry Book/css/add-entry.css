@@ -1,0 +1,109 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding-top: 60px; /* Space for fixed nav */
+    font-size: 16px;
+}
+
+.main-title {
+    margin-top: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: #ccc;
+}
+
+/* Form Styling */
+form {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    max-width: auto;
+    margin: 20px auto; /* Center the form horizontally */
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="date"],
+form textarea {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px;
+    width: calc(100% - 22px); /* Adjust width to account for padding */
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+form textarea {
+    height: 150px; /* Set a fixed height for the textarea */
+}
+
+form button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    body {
+        margin: 10px;
+        padding-top: 50px;
+        font-size: 14px;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    form textarea {
+        height: 120px;
+    }
+}

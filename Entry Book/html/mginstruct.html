@@ -1,0 +1,40 @@
+<!-- mginstruct.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Management Instruction</title>
+    <link rel="stylesheet" href="../css/mginstruct.css">
+</head>
+<body>
+    <h1 class="main-title">Add Management Instruction</h1>
+    <nav>
+        <ul>
+            <li><a href="../html/MainEntry.html">Home</a></li>
+            <li><a href="../php/add-entry.php">Add Entry</a></li>
+            <li><a href="../html/mginstruct.html">Management Instructions</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <form id="instruct-form">
+            <label for="instruction-date">Date:</label>
+            <input type="text" id="instruction-date" name="date" readonly>
+
+            <label for="manager-select">Manager:</label>
+            <select id="manager-select" name="manager">
+                <option value="manager1">Manager 1</option>
+                <option value="manager2">Manager 2</option>
+                <option value="manager3">Manager 3</option>
+                <option value="manager4">Manager 4</option>
+            </select>
+
+            <label for="instruction-text">Instruction:</label>
+            <textarea id="instruction-text" name="instruction" required></textarea>
+
+            <button type="submit">Add Instruction</button>
+        </form>
+    </div>
+    <script src="../js/instruct.js" defer></script>
+</body>
+</html>
