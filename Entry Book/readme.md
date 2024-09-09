@@ -20,13 +20,13 @@ entries.xml: XML file containing entry data
 update_entries.php: Script for updating entry data
 
 To-Do
-Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu.
-Sort instructions by latest entry on mainentry.html, might need to add time and sort by time.
-Create a secured login database for manager passwords.
-Acknowledge management entry with user custom password
+1) Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu.
+2) Sort instructions by latest entry on mainentry.html, might need to add time and sort by time.
+3) Create a secured login database for manager passwords.
+4) Acknowledge management entry with user custom password
 - highlight + possible popup. 
-search entry page - list possibilities
-management add / remove customer page
+5) search entry page - list possibilities
+6) management add / remove customer page
 
 License
 This project is licensed under the MIT License.
