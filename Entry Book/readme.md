@@ -18,10 +18,16 @@ entries.xml: XML file containing entry data
 [entryscript.js](cci:4://c:/xampp/htdocs/Entry Book/js/entryscript.js:0:0-16:0): Script for generating OB numbers and managing entries
 [php/](cci:7://c:\xampp\htdocs\Entry Book\php:0:0-0:0): PHP files for the application
 update_entries.php: Script for updating entry data
+
 To-Do
 Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu.
 Sort instructions by latest entry on mainentry.html, might need to add time and sort by time.
 Create a secured login database for manager passwords.
+Acknowledge management entry with user custom password
+- highlight + possible popup. 
+search entry page - list possibilities
+management add / remove customer page
+
 License
 This project is licensed under the MIT License.
 
