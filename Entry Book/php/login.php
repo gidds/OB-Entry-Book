@@ -12,7 +12,7 @@ if ($username === 'admin' && $password === 'password123') {
     
     // Set the cookie
     echo "<script>window.opener.loginSuccess(); window.close();</script>";
-    header("Location: ../html/mginstruct.html");
+    header("Location: ../php/mgmtinstruct.php");
     exit();
 } else {
     // Redirect back to the login page with an error message

@@ -20,13 +20,15 @@ entries.xml: XML file containing entry data
 update_entries.php: Script for updating entry data
 
 To-Do
-1) Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu.
+1) Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu. (Done )
 2) Sort instructions by latest entry on mainentry.html, might need to add time and sort by time.
-3) Create a secured login database for manager passwords.
+3) Create a secured login database for manager passwords.(See point 7)
 4) Acknowledge management entry with user custom password
 - highlight + possible popup. 
 5) search entry page - list possibilities
 6) management add / remove customer page
+7) use Hashed JSON, Local Storage, IndexDB or AUTH Library like AUTH0 and Okta for management logins. 
+8) Add seach box to mainentry page to search OB Entries. 
 
 License
 This project is licensed under the MIT License.

@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    // Hide the login link
+    $loginLink = '';
+} else {
+    // Show the login link
+    $loginLink = '<li><a href="../html/login.html">Login</a></li>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +25,12 @@
     <h1 class="main-title">Add Entry</h1>
     <nav>
         <ul>
-            <li><a href="../html/MainEntry.html">Home</a></li>
-            <li><a href="../php/add-entry.php">Add Entry</a></li>
-            <li id="login-item"><a href="../html/login.html">Login</a></li>
+        <ul>
+            <li><a href="../php/MainEntry.php">Home</a></li> <!-- Home link -->
+            <li><a href="../php/add-entry.php">Add Entry</a></li> <!-- Add Entry link -->
+            <?php echo $loginLink; ?>
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) { ?>
-                <li><a href="../html/mginstruct.html">Add Management Instruction</a></li>
+                <li><a href="../php/mgmtinstruct.php">Management Instructions</a></li>
             <?php } ?>
         </ul>
     </nav>

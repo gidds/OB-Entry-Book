@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    // Hide the login link
+    $loginLink = '';
+} else {
+    // Show the login link
+    $loginLink = '<li><a href="../html/login.html">Login</a></li>';
+}
+?>
 <!-- MainEntry.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -8,14 +20,19 @@
     <link rel="stylesheet" href="../css/mainentry.css"> <!-- Load style.css -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Load jQuery -->
     <script src="../js/script.js" defer></script> <!-- Load the script.js -->
+    <script src="../js/userlogged.js"></script> <!--Load user logged script-->
+    <script src="../js/entryack.js"></script>
 </head>
 <body>
     <h1 class="main-title">Entry Book</h1>
     <nav>
         <ul>
-            <li><a href="../html/MainEntry.html">Home</a></li> <!-- Home link -->
+            <li><a href="../php/MainEntry.php">Home</a></li> <!-- Home link -->
             <li><a href="../php/add-entry.php">Add Entry</a></li> <!-- Add Entry link -->
-            <li><a href="../html/login.html">Login</a></li>
+            <?php echo $loginLink; ?>
+            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) { ?>
+                <li><a href="../php/mgmtinstruct.php">Management Instructions</a></li>
+            <?php } ?>
         </ul>
         <div id="countdown"></div> <!-- Countdown timer display -->
     </nav>

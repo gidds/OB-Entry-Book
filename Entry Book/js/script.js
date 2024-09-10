@@ -105,6 +105,7 @@ $(document).ready(function() {
                             ${instruction.date !== 'No Date' ? `<p><strong>Date:</strong> ${instruction.date}</p>` : ''}
                             ${instruction.manager ? `<p><strong>Manager:</strong> ${instruction.manager}</p>` : ''}
                             ${instruction.instructionText !== 'No Instruction' ? `<p><strong>Instruction:</strong> ${instruction.instructionText}</p>` : ''} <!-- Handle empty 'instructionText' -->
+                            <button class="ack-button" data-instruction-id="${instruction.date}">ACK</button> <!-- Add a button with a unique ID -->
                             <hr /> <!-- Line between instructions -->
                         </div>
                     `;
