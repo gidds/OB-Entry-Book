@@ -25,6 +25,7 @@ To-Do
 3) Create a secured login database for manager passwords.(See point 7)
 4) Acknowledge management entry with user custom password
 - highlight + possible popup. 
+    - button is added to each entry, but entry xml is not updating on mainentry.php. TODO
 5) search entry page - list possibilities
 6) management add / remove customer page
 7) use Hashed JSON, Local Storage, IndexDB or AUTH Library like AUTH0 and Okta for management logins. 
