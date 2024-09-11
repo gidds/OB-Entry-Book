@@ -19,17 +19,21 @@ entries.xml: XML file containing entry data
 [php/](cci:7://c:\xampp\htdocs\Entry Book\php:0:0-0:0): PHP files for the application
 update_entries.php: Script for updating entry data
 
-To-Do
-1) Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu. (Done )
-2) Sort instructions by latest entry on mainentry.html, might need to add time and sort by time. UPDATE : Used uniqie ID auto increments for sorting management isntructions. (Done)
-3) Create a secured login database for manager passwords.(See point 7)
-4) Acknowledge management entry with user custom password
-- highlight + possible popup. 
-    - button is added to each entry, but entry xml is not updating on mainentry.php. TODO
-5) search entry page - list possibilities
-6) management add / remove customer page
-7) use Hashed JSON, Local Storage, IndexDB or AUTH Library like AUTH0 and Okta for management logins. 
-8) Add seach box to mainentry page to search OB Entries. 
+<h2>High Priority</h2>
+Secure Login Database: Implement a secure database for managing passwords.
+Acknowledgment for Management Entry: Add a button to each entry for acknowledgment and highlight or display a popup. Note: XML updates are not yet reflected in mainentry.php.
+
+<h2>In Progress</h2>
+Search Functionality: Add a search page to list and manage entries.
+Enhanced Login Security: Explore options like Hashed JSON, Local Storage, IndexedDB, or authentication libraries such as Auth0 and Okta for secure management logins.
+
+<h2>Pending</h2>
+Manage Customer Entries: Create pages for adding and removing customer entries.
+Search Box: Implement a search box on the mainentry page to search OB Entries.
+
+<h2>Completed</h2>
+Fix Login Issue: Ensure that mginstruct shows when logged in and remains visible across all pages.
+Sort Instructions: Sort instructions by latest entry in mainentry.html. Currently using unique ID auto-increments for sorting management instructions.
 
 License
 This project is licensed under the MIT License.
