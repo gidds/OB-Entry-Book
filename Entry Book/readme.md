@@ -21,7 +21,7 @@ update_entries.php: Script for updating entry data
 
 To-Do
 1) Fix login issue: mginstruct to show when logged in and stay visible on all pages when logged in, hide login on menu. (Done )
-2) Sort instructions by latest entry on mainentry.html, might need to add time and sort by time.
+2) Sort instructions by latest entry on mainentry.html, might need to add time and sort by time. UPDATE : Used uniqie ID auto increments for sorting management isntructions. (Done)
 3) Create a secured login database for manager passwords.(See point 7)
 4) Acknowledge management entry with user custom password
 - highlight + possible popup. 
@@ -34,4 +34,3 @@ To-Do
 License
 This project is licensed under the MIT License.
 
-Note that this is just a rough draft, and you can modify it to fit your specific needs and project details.

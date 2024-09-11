@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <instructions>
-    <!-- Your instructions will be added here -->
-<instruction><date>2024-09-08</date><manager>manager1</manager><instruction_text>Testing first instruction to be added</instruction_text></instruction><instruction><date>2024-09-08</date><manager>manager1</manager><instruction_text>Second instruction added after trying to make login dissapear when logged in. </instruction_text></instruction><instruction><date>2024-09-08</date><manager>manager1</manager><instruction_text>This is a instruction after some changes were made to add entry php file. checking if logged in works now. </instruction_text></instruction><instruction><date>2024-09-08</date><manager>manager1</manager><instruction_text>Seems like login works now, only shows when logged in from login page, but goes away as soon as menu is changed. to be worked on still. </instruction_text></instruction><instruction id="instruction-1"><date>2024-09-10</date><manager>manager1</manager><instruction_text>Test instructions after permission changed. </instruction_text><entry_time>2024-09-10 22:25:38</entry_time></instruction></instructions>
+    <instruction id="1">
+        <date>2024-09-08</date>
+        <manager>manager1</manager>
+        <instruction_text>Testing first instruction to be added</instruction_text>
+    </instruction>
+    <instruction id="2">
+        <date>2024-09-08</date>
+        <manager>manager1</manager>
+        <instruction_text>Second instruction added after trying to make login disappear when logged in.</instruction_text>
+    </instruction>
+    <instruction id="3">
+        <date>2024-09-08</date>
+        <manager>manager1</manager>
+        <instruction_text>This is an instruction after some changes were made to add entry PHP file. Checking if logged in works now.</instruction_text>
+    </instruction>
+    <instruction id="4">
+        <date>2024-09-08</date>
+        <manager>manager1</manager>
+        <instruction_text>Seems like login works now, only shows when logged in from login page, but goes away as soon as menu is changed. To be worked on still.</instruction_text>
+    </instruction>
+    <instruction id="5">
+        <date>2024-09-10</date>
+        <manager>manager1</manager>
+        <instruction_text>Test instructions after permission changed.</instruction_text>
+        <entry_time>2024-09-10 22:25:38</entry_time>
+    </instruction>
+    <instruction id="6">
+        <date>2024-09-11</date>
+        <manager>manager4</manager>
+        <instruction_text>Checking newest entry made.</instruction_text>
+        <entry_time>2024-09-11 21:35:09</entry_time>
+    </instruction>
+<instruction id="7"><date>2024-09-11</date><manager>manager4</manager><instruction_text>Adding 7th instruction</instruction_text><entry_time>2024-09-11 22:14:26</entry_time></instruction><instruction id="8"><date>2024-09-11</date><manager>manager1</manager><instruction_text>This will be the 8th instruction</instruction_text><entry_time>2024-09-11 22:16:14</entry_time></instruction><instruction id="9"><date>2024-09-11</date><manager>manager2</manager><instruction_text>This is the 9th instruction taking place</instruction_text><entry_time>2024-09-11 22:16:52</entry_time></instruction></instructions>

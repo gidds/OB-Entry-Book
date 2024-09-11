@@ -2,15 +2,19 @@
 // add_instruction.php
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $date = $_POST['date'];
-    $manager = $_POST['manager'];
-    $instruction = $_POST['instruction'];
+    $date = isset($_POST['date']) ? $_POST['date'] : '';
+    $manager = isset($_POST['manager']) ? $_POST['manager'] : '';
+    $instruction = isset($_POST['instruction']) ? $_POST['instruction'] : '';
 
     $xmlFile = '../data/instructions.xml';
 
     // Load existing XML file or create a new one
     if (file_exists($xmlFile)) {
         $xml = simplexml_load_file($xmlFile);
+        if ($xml === false) {
+            echo 'Failed to load XML file.';
+            exit;
+        }
     } else {
         $xml = new SimpleXMLElement('<instructions></instructions>');
     }
@@ -18,22 +22,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the last instruction ID
     $lastInstruction = $xml->xpath('//instruction[last()]');
     if ($lastInstruction) {
-        $lastId = (int) substr($lastInstruction[0]['id'], 4); // Extract the ID number
+        $lastId = (int) $lastInstruction[0]['id']; // Extract the numeric ID
         $newId = $lastId + 1;
     } else {
         $newId = 1; // First instruction
     }
 
+    // Debugging: Output the new ID
+    echo 'New ID: ' . $newId . '<br>';
+
     // Create a new instruction entry
     $newEntry = $xml->addChild('instruction');
-    $newEntry->addAttribute('id', 'instruction-' . $newId);
+    $newEntry->addAttribute('id', $newId); // Use just the numeric ID
     $newEntry->addChild('date', htmlspecialchars($date));
     $newEntry->addChild('manager', htmlspecialchars($manager));
     $newEntry->addChild('instruction_text', htmlspecialchars($instruction));
     $newEntry->addChild('entry_time', date('Y-m-d H:i:s')); // Add current time of entry
 
     // Save the updated XML file
-    $xml->asXML($xmlFile);
+    if ($xml->asXML($xmlFile) === false) {
+        echo 'Failed to save XML file.';
+        exit;
+    }
 
     // Return success
     echo 'success';

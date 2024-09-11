@@ -16,6 +16,7 @@ $(document).ready(function() {
             type: 'GET',
             url: '../data/entries.xml',
             dataType: 'xml',
+            
             success: function(xml) {
                 var $entries = $(xml).find('entry');
                 var entriesArray = [];
@@ -74,38 +75,46 @@ $(document).ready(function() {
             url: '../data/instructions.xml',
             dataType: 'xml',
             success: function(xml) {
+                // Debugging: Log the loaded XML to the console
+                console.log('XML Loaded:', xml);
+    
                 var $instructions = $(xml).find('instruction');
                 var instructionsArray = [];
-
+    
                 $instructions.each(function() {
+                    var id = $(this).attr('id');
                     var date = $(this).find('date').text().trim() || 'No Date';
                     var manager = $(this).find('manager').text().trim() || 'No Manager';
                     var instructionText = $(this).find('instruction_text').text().trim() || 'No Instruction';
-
+                    var datetime = $(this).find('entry_time').text().trim() || 'No Date';
+    
                     instructionsArray.push({
+                        id: id,
                         date: date,
                         manager: manager,
-                        instructionText: instructionText
+                        instructionText: instructionText,
+                        datetime: datetime
                     });
                 });
-
-                 // Sort instructions by date in descending order
-                 instructionsArray.sort(function(a, b) {
-                    return new Date(b.date) - new Date(a.date);
+    
+                 // Sort instructions by ID in descending order
+                instructionsArray.sort(function(a, b) {
+                    return parseInt(b.id, 10) - parseInt(a.id, 10);
                 });
-
+    
                 // Clear existing instructions in the container
                 $("#instructions-container").empty();
-
+    
                 // Append instructions to the container
                 instructionsArray.forEach(function(instruction) {
                     var instructionHTML = `
                         <div>
-                            <h2>Instruction</h2>
-                            ${instruction.date !== 'No Date' ? `<p><strong>Date:</strong> ${instruction.date}</p>` : ''}
-                            ${instruction.manager ? `<p><strong>Manager:</strong> ${instruction.manager}</p>` : ''}
-                            ${instruction.instructionText !== 'No Instruction' ? `<p><strong>Instruction:</strong> ${instruction.instructionText}</p>` : ''} <!-- Handle empty 'instructionText' -->
-                            <button class="ack-button" data-instruction-id="${instruction.date}">ACK</button> <!-- Add a button with a unique ID -->
+                            <h2>Management Instruction</h2>
+                            <h3>ID: ${instruction.id}</h3>
+                            <p><strong>Date:</strong> ${instruction.date}</p>
+                            <p><strong>Manager:</strong> ${instruction.manager}</p>
+                            <p><strong>Instruction:</strong> ${instruction.instructionText}</p>
+                            <p><strong>Datetime:</strong> ${instruction.datetime}</p>
                             <hr /> <!-- Line between instructions -->
                         </div>
                     `;
@@ -118,18 +127,18 @@ $(document).ready(function() {
             }
         });
     }
+    
+    // Initialize countdown and entries loading
+    updateCountdown();
+    loadEntries();
+    loadInstructions(); // Load instructions
 
-     // Initialize countdown and entries loading
-     updateCountdown();
-     loadEntries();
-     loadInstructions(); // Load instructions
- 
-     // Set up interval to update countdown every second
-     setInterval(updateCountdown, 1000);
- 
-     // Set up interval to reload entries and instructions
-     setInterval(function() {
-         loadEntries();
-         loadInstructions();
-     }, refreshInterval);
- });
+    // Set up interval to update countdown every second
+    setInterval(updateCountdown, 1000);
+
+    // Set up interval to reload entries and instructions
+    setInterval(function() {
+        loadEntries();
+        loadInstructions();
+    }, refreshInterval);
+});
