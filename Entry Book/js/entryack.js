@@ -1,38 +1,47 @@
-// Append instructions to the container
-instructionsArray.forEach(function(instruction) {
-    var instructionHTML = `
-      <div>
-        <p>${instruction.instructionText}</p>
-        <button class="ack-button">ACK</button>
-        <span class="ack-status"></span>
-      </div>
-    `;
-    $("#instructions-container").append(instructionHTML);
+$(document).ready(function() {
+  // Highlight new instructions in red
+  $('.instruction-entry').each(function() {
+      const isNew = $(this).data('new'); // Assuming you have a data attribute to mark new instructions
+      if (isNew) {
+          $(this).css({
+              'background-color': 'red',
+              'color': 'white'
+          });
+      }
   });
-  
-  // Attach click event listener to ACK buttons
-  $(".ack-button").on("click", function() {
-    var instructionId = $(this).closest("div").data("instruction-id");
-    var password = prompt("Enter your password:");
-    // Verify password and update instruction
-    if (verifyPassword(password)) {
-      updateInstructionAck(instructionId, getUsername());
-    }
+
+  // Handle ACK button click
+  $('.ack-button').on('click', function() {
+      const $instruction = $(this).closest('.instruction-entry');
+      const instructionId = $instruction.data('id'); // Assuming each entry has an ID
+
+      // Show password prompt
+      const password = prompt('Enter 4-digit password:');
+      if (password && /^[0-9]{4}$/.test(password)) {
+          $.ajax({
+              url: '../php/acknowledge_instruction.php',
+              type: 'POST',
+              data: {
+                  id: instructionId,
+                  password: password
+              },
+              success: function(response) {
+                  if (response === 'success') {
+                      // Update instruction style and save operator name
+                      $instruction.css({
+                          'background-color': 'white',
+                          'color': 'black'
+                      }).data('new', false); // Mark as acknowledged
+
+                      // Optionally update the DOM to reflect changes
+                      // E.g., show a message or refresh the list
+                  } else {
+                      alert('Incorrect password.');
+                  }
+              }
+          });
+      } else {
+          alert('Please enter a valid 4-digit password.');
+      }
   });
-  
-  // Update instruction ACK status and color
-  function updateInstructionAck(instructionId, username) {
-    var instructionElement = $("#instructions-container").find(`div[data-instruction-id="${instructionId}"]`);
-    instructionElement.find(".ack-status").text(`ACK by ${username}`);
-    instructionElement.css("background-color", "white");
-  }
-  
-  // Verify password (TO DO: implement password verification logic)
-  function verifyPassword(password) {
-    // ...
-  }
-  
-  // Get username (TO DO: implement logic to get current username)
-  function getUsername() {
-    // ...
-  }
+});

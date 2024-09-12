@@ -1,0 +1,31 @@
+|-- Entry Book
+    |-- css
+        |-- add-entry.css
+        |-- login.css
+        |-- mainentry.css
+        |-- mginstruct.css
+    |-- data
+        |-- auth.xml
+        |-- entries.xml
+        |-- instructions.xml
+    |-- html
+        |-- login.html
+    |-- js
+        |-- entryack.js
+        |-- entryscript.js
+        |-- instruct.js
+        |-- script.js
+        |-- test.js
+        |-- userlogged.js
+    |-- php
+        |-- MainEntry.php
+        |-- acknowledge_instruction.php
+        |-- add-entry.php
+        |-- add_instruction.php
+        |-- login.php
+        |-- mgmtinstruct.php
+        |-- search_entries.php
+        |-- update_entries.php
+    |-- readme.md
+|-- LICENSE
+|-- codesave.txt
