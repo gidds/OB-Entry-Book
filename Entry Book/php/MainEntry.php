@@ -22,11 +22,6 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entry Book</title>
-    <link rel="stylesheet" href="../css/mainentry.css"> <!-- Load style.css -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Load jQuery -->
-    <script src="../js/entryack.js" defer></script> <!-- Load entryack.js for ACK button logic -->
-    <script src="../js/script.js" defer></script> <!-- Load the script.js -->
-    <script src="../js/userlogged.js"></script> <!-- Load userlogged.js to handle user session -->
 </head>
 <body>
     <h1 class="main-title">Entry Book</h1>
@@ -76,5 +71,10 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
             ?>
         </div>
     </div>
+    <link rel="stylesheet" href="../css/mainentry.css"> <!-- Load style.css -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Load jQuery -->
+    <script src="../js/script.js" defer></script> <!-- Load the script.js -->
+    <script src="../js/entryack.js" defer></script> <!-- Load entryack.js for ACK button logic -->
+    <script src="../js/userlogged.js"></script> <!-- Load userlogged.js to handle user session -->
 </body>
 </html>
