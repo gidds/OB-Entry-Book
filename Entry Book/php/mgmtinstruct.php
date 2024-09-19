@@ -23,10 +23,6 @@
 
             <label for="manager-select">Manager:</label>
             <select id="manager-select" name="manager">
-                <option value="manager1">Manager 1</option>
-                <option value="manager2">Manager 2</option>
-                <option value="manager3">Manager 3</option>
-                <option value="manager4">Manager 4</option>
             </select>
 
             <label for="instruction-text">Instruction:</label>

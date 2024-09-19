@@ -2,15 +2,20 @@
 session_start();
 
 // Check if the user is logged in
+$loginLink = '';
+$mgmtLink = '';
+
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    // Hide the login link
-    $loginLink = '';
+    // Hide the login link and show the management instructions link
+    $mgmtLink = '<li><a href="../php/mgmtinstruct.php">Management Instructions</a></li>';
 } else {
     // Show the login link
     $loginLink = '<li><a href="../html/login.html">Login</a></li>';
 }
+
+// Load XML data for instructions
+$instructionsXml = simplexml_load_file('../data/instructions.xml');
 ?>
-<!-- MainEntry.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +24,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     <title>Entry Book</title>
     <link rel="stylesheet" href="../css/mainentry.css"> <!-- Load style.css -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Load jQuery -->
+    <script src="../js/entryack.js" defer></script> <!-- Load entryack.js for ACK button logic -->
     <script src="../js/script.js" defer></script> <!-- Load the script.js -->
-    <script src="../js/userlogged.js"></script> <!--Load user logged script-->
-    <script src="../js/entryack.js"></script>
+    <script src="../js/userlogged.js"></script> <!-- Load userlogged.js to handle user session -->
 </head>
 <body>
     <h1 class="main-title">Entry Book</h1>
@@ -29,21 +34,46 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         <ul>
             <li><a href="../php/MainEntry.php">Home</a></li> <!-- Home link -->
             <li><a href="../php/add-entry.php">Add Entry</a></li> <!-- Add Entry link -->
-            <?php echo $loginLink; ?>
-            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) { ?>
-                <li><a href="../php/mgmtinstruct.php">Management Instructions</a></li>
-            <?php } ?>
+            <?php
+            // Show login or management instructions link based on user session
+            echo $loginLink;
+            echo $mgmtLink;
+            ?>
         </ul>
         <div id="countdown"></div> <!-- Countdown timer display -->
     </nav>
     <div class="container">
         <div id="entry-container">
-            <h2> OBEntries</h2> <!-- Entries header -->
-            <!-- Entries will be displayed here -->
+            <h2>OB Entries</h2> <!-- Entries header -->
+            <!-- You can load entries dynamically via AJAX or PHP -->
         </div>
         <div id="instructions-container">
             <h2>Management Instructions</h2> <!-- Instructions header -->
-            <!-- Instructions will be displayed here -->
+
+            <?php
+            // Loop through each instruction in the XML file and display it
+            foreach ($instructionsXml->instruction as $instruction) {
+                // Check the value of the ackop field
+                $ackop = (string)$instruction->ackop;
+
+                // Apply a highlight class if the instruction is not acknowledged (ackop = 'none')
+                $highlightClass = $ackop === 'none' ? 'highlight-red' : '';
+
+                echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
+                echo '<p><strong>Instruction:</strong> ' . $instruction->instruction_text . '</p>';
+                echo '<p><strong>Date:</strong> ' . $instruction->date . '</p>';
+                echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
+
+                // Show ACK button if the instruction is not acknowledged (ackop = 'none')
+                if ($ackop === 'none') {
+                    echo '<button class="ack-button" data-id="' . $instruction['id'] . '">ACK</button>';
+                } else {
+                    echo '<p><strong>Acknowledged by:</strong> ' . $ackop . '</p>';
+                }
+
+                echo '</div>';
+            }
+            ?>
         </div>
     </div>
 </body>

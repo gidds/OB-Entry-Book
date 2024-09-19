@@ -1,8 +1,10 @@
 <auth>
-    <passwords>
+    <operator>
+        <name>John Doe</name>
         <password>1234</password>
+    </operator>
+    <operator>
+        <name>Jane Doe</name>
         <password>5678</password>
-        <!-- Add more passwords as needed -->
-    </passwords>
-    <!-- Optional: Add operator details here if needed -->
+    </operator>
 </auth>

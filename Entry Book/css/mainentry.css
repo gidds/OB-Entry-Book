@@ -127,3 +127,12 @@ nav a:hover {
         flex-direction: column; /* Stacks items vertically on small screens */
     }
 }
+
+/* Highlighting */
+.highlight-red {
+    background-color: red;
+    color: white;
+    padding: 10px; /* Ensure padding so text isn't cramped */
+    border-radius: 5px; /* Apply rounded corners to the highlighted div */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add slight shadow for visibility */
+}

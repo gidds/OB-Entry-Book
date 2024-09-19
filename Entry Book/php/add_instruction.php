@@ -28,8 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newId = 1; // First instruction
     }
 
-    // Debugging: Output the new ID
-    echo 'New ID: ' . $newId . '<br>';
 
     // Create a new instruction entry
     $newEntry = $xml->addChild('instruction');
@@ -38,6 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newEntry->addChild('manager', htmlspecialchars($manager));
     $newEntry->addChild('instruction_text', htmlspecialchars($instruction));
     $newEntry->addChild('entry_time', date('Y-m-d H:i:s')); // Add current time of entry
+
+    // Convert the SimpleXMLElement to DOMDocument for formatting
+    $dom = new DOMDocument('1.0');
+    $dom->preserveWhiteSpace = false; // Remove extra whitespaces
+    $dom->formatOutput = true; // Enable pretty print
+    $dom->loadXML($xml->asXML());
 
     // Save the updated XML file
     if ($xml->asXML($xmlFile) === false) {

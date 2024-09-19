@@ -4,32 +4,66 @@
         <date>2024-09-08</date>
         <manager>manager1</manager>
         <instruction_text>Testing first instruction to be added</instruction_text>
+        <ackop>none</ackop>
     </instruction>
     <instruction id="2">
         <date>2024-09-08</date>
         <manager>manager1</manager>
         <instruction_text>Second instruction added after trying to make login disappear when logged in.</instruction_text>
+        <ackop>none</ackop>
     </instruction>
     <instruction id="3">
         <date>2024-09-08</date>
         <manager>manager1</manager>
         <instruction_text>This is an instruction after some changes were made to add entry PHP file. Checking if logged in works now.</instruction_text>
+        <ackop>none</ackop>
     </instruction>
     <instruction id="4">
         <date>2024-09-08</date>
         <manager>manager1</manager>
         <instruction_text>Seems like login works now, only shows when logged in from login page, but goes away as soon as menu is changed. To be worked on still.</instruction_text>
+        <ackop>none</ackop>
     </instruction>
     <instruction id="5">
         <date>2024-09-10</date>
         <manager>manager1</manager>
         <instruction_text>Test instructions after permission changed.</instruction_text>
         <entry_time>2024-09-10 22:25:38</entry_time>
+        <ackop>none</ackop>
     </instruction>
     <instruction id="6">
         <date>2024-09-11</date>
         <manager>manager4</manager>
         <instruction_text>Checking newest entry made.</instruction_text>
         <entry_time>2024-09-11 21:35:09</entry_time>
+        <ackop>none</ackop>
     </instruction>
-<instruction id="7"><date>2024-09-11</date><manager>manager4</manager><instruction_text>Adding 7th instruction</instruction_text><entry_time>2024-09-11 22:14:26</entry_time></instruction><instruction id="8"><date>2024-09-11</date><manager>manager1</manager><instruction_text>This will be the 8th instruction</instruction_text><entry_time>2024-09-11 22:16:14</entry_time></instruction><instruction id="9"><date>2024-09-11</date><manager>manager2</manager><instruction_text>This is the 9th instruction taking place</instruction_text><entry_time>2024-09-11 22:16:52</entry_time></instruction></instructions>
+    <instruction id="7">
+        <date>2024-09-11</date>
+        <manager>manager4</manager>
+        <instruction_text>Adding 7th instruction</instruction_text>
+        <entry_time>2024-09-11 22:14:26</entry_time>
+        <ackop>none</ackop>
+    </instruction>
+    <instruction id="8">
+        <date>2024-09-11</date>
+        <manager>manager1</manager>
+        <instruction_text>This will be the 8th instruction</instruction_text>
+        <entry_time>2024-09-11 22:16:14</entry_time>
+        <ackop>none</ackop>
+    </instruction>
+    <instruction id="9">
+        <date>2024-09-11</date>
+        <manager>manager2</manager>
+        <instruction_text>This is the 9th instruction taking place</instruction_text>
+        <entry_time>2024-09-11 22:16:52</entry_time>
+        <ackop>none</ackop>
+    </instruction>
+    <instruction id="10">
+        <date>2024-09-18</date>
+        <manager>manager1</manager>
+        <instruction_text>10th manager entry after changing the ack php and html settings.</instruction_text>
+        <entry_time>2024-09-18 21:51:33</entry_time>
+        <ackop>none</ackop>
+    </instruction>
+<instruction id="11"><date>2024-09-19</date><manager>Manager 2</manager><instruction_text>Test entry added with none statement</instruction_text><entry_time>2024-09-19 21:06:43</entry_time></instruction><instruction id="12"><date>2024-09-19</date><manager>Manager 2</manager><instruction_text>Test entry added with none statement</instruction_text><entry_time>2024-09-19 21:06:47</entry_time></instruction><instruction id="13"><date>2024-09-19</date><manager>Manager 4</manager><instruction_text>Test 12th instruction before continueing code</instruction_text><entry_time>2024-09-19 21:10:50</entry_time></instruction><instruction id="14"><date>2024-09-19</date><manager>Manager 4</manager><instruction_text>testing 15th entry after success debug issue resolved</instruction_text><entry_time>2024-09-19 21:13:38</entry_time></instruction></instructions>

@@ -98,7 +98,7 @@ $(document).ready(function() {
                 // Re-enable the submit button
                 $submitButton.prop('disabled', false);
                 // Redirect to MainEntry.html
-                window.location.href = '../html/MainEntry.html';
+                window.location.href = '../php/MainEntry.php';
             },
             error: function(xhr, status, error) {
                 console.error('Error adding entry: ' + error);
