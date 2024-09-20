@@ -4,7 +4,6 @@
         <date>2024-09-08</date>
         <manager>manager1</manager>
         <instruction_text>Testing first instruction to be added</instruction_text>
-        <ackop>none</ackop>
     </instruction>
     <instruction id="2">
         <date>2024-09-08</date>

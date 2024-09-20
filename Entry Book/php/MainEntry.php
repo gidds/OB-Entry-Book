@@ -47,37 +47,49 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
             <h2>Management Instructions</h2> <!-- Instructions header -->
 
            <?php
-// Loop through each instruction in the XML file and display it
-foreach ($instructionsXml->instruction as $instruction) {
-    // Check the value of the ackop field
-    $ackop = (string)$instruction->ackop;
+           // Gather instructions into an array
+           $instructionsArray = [];
+           foreach ($instructionsXml->instruction as $instruction) {
+               $instructionsArray[] = $instruction;
+           }
 
-    // Apply a highlight class if the instruction is not acknowledged (ackop = '')
-    $highlightClass = $ackop === '' ? 'highlight-red' : '';
+           // Sort the instructions by 'id' (or 'date')
+           usort($instructionsArray, function($a, $b) {
+               return (int)$b['id'] - (int)$a['id']; // Sorts by 'id' in descending order (newest to oldest)
+           });
 
-    echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
-    echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
-    echo '<p><strong>Instruction:</strong> ' . $instruction->instruction_text . '</p>';
-    echo '<p><strong>Date:</strong> ' . $instruction->date . '</p>';
+           // Loop through each sorted instruction and display it
+           foreach ($instructionsArray as $instruction) {
+               // Check the value of the ackop field
+               $ackop = (string)$instruction->ackop;
 
-    // Show ACK button if the instruction is not acknowledged (ackop = 'none')
-    if ($ackop === 'none') {
-        echo '<button class="ack-button" data-id="' . $instruction['id'] . '">ACK</button>';
-    } else {
-        echo '<p><strong>Acknowledged by:</strong> ' . $ackop . '</p>';
-    }
+               // Apply a highlight class if the instruction is not acknowledged (ackop = '')
+               $highlightClass = $ackop === '' ? 'highlight-red' : '';
 
-    echo '</div>';
-    echo '<hr>'; // Add a line after each instruction entry
-}
-?>
+               echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
+               echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
+               echo '<p><strong>Instruction:</strong> ' . $instruction->instruction_text . '</p>';
+               echo '<p><strong>Date:</strong> ' . $instruction->date . '</p>';
 
+               // Show ACK button if the instruction is not acknowledged (ackop = 'none')
+               if ($ackop === 'none') {
+                   echo '<button class="ack-button" data-id="' . $instruction['id'] . '">ACK</button>';
+               } else {
+                   echo '<p><strong>Acknowledged by:</strong> ' . $ackop . '</p>';
+               }
+
+               echo '</div>';
+               echo '<hr>'; // Add a line after each instruction entry
+           }
+           ?>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script> <!-- Load jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Load jQuery -->
     <script src="../js/script.js" defer></script> <!-- Load the script.js -->
     <script src="../js/entryack.js" defer></script> <!-- Load entryack.js for ACK button logic -->
     <script src="../js/userlogged.js"></script> <!-- Load userlogged.js to handle user session -->
-	<!-- <div id="countdown"></div> <!-- Countdown timer display -->
+	<!-- Countdown timer display commented out
+    <div id="countdown"></div>
+    -->
 </body>
 </html>

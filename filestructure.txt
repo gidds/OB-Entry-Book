@@ -3,6 +3,7 @@
         |-- add-entry.css
         |-- login.css
         |-- mainentry.css
+        |-- mainentry.css.bak
         |-- mginstruct.css
     |-- data
         |-- auth.xml
@@ -15,10 +16,13 @@
         |-- entryscript.js
         |-- instruct.js
         |-- script.js
+        |-- script.js.bak
         |-- test.js
         |-- userlogged.js
+        |-- userlogged.js.bak
     |-- php
         |-- MainEntry.php
+        |-- MainEntry.php.bak
         |-- acknowledge_instruction.php
         |-- add-entry.php
         |-- add_instruction.php

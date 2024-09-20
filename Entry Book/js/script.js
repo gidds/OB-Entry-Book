@@ -1,4 +1,3 @@
-// script.js
 $(document).ready(function() {
     // Set the refresh interval in milliseconds
     const refreshInterval = 60000; // 60 seconds
@@ -15,21 +14,24 @@ $(document).ready(function() {
                 var $entries = $(xml).find('entry');
                 var entriesArray = [];
 
-                $entries.each(function() {
+                $instructions.each(function() {
                     var id = $(this).attr('id');
                     var date = $(this).find('date').text().trim() || 'No Date';
-                    var obNumber = $(this).find('ob_number').text().trim();
-                    var customer = $(this).find('customer').text().trim();
-                    var obentry = $(this).find('obentry').text().trim() || 'No Entry';
-
-                    entriesArray.push({
+                    var manager = $(this).find('manager').text().trim() || 'No Manager';
+                    var instructionText = $(this).find('instruction_text').text().trim() || 'No Instruction';
+                    var datetime = $(this).find('entry_time').text().trim() || 'No Date';
+                    var ackop = $(this).find('ackop').text().trim() || 'none'; // Set ackop to 'none' if missing
+                
+                    instructionsArray.push({
                         id: id,
                         date: date,
-                        obNumber: obNumber,
-                        customer: customer,
-                        obentry: obentry
+                        manager: manager,
+                        instructionText: instructionText,
+                        datetime: datetime,
+                        ackop: ackop
                     });
                 });
+                
 
                 // Sort entries by OB number in descending order
                 entriesArray.sort(function(a, b) {
@@ -68,41 +70,43 @@ $(document).ready(function() {
 
     // Function to load instructions from XML and update the page
     function loadInstructions() {
-    $.ajax({
-        type: 'GET',
-        url: '../data/instructions.xml',
-        dataType: 'xml',
-        success: function(xml) {
-            var $instructions = $(xml).find('instruction');
-            var instructionsArray = [];
+        $.ajax({
+            type: 'GET',
+            url: '../data/instructions.xml',
+            dataType: 'xml',
+            success: function(xml) {
+                var $instructions = $(xml).find('instruction');
+                var instructionsArray = [];
 
-            $instructions.each(function() {
-                var id = $(this).attr('id');
-                var date = $(this).find('date').text().trim() || 'No Date';
-                var manager = $(this).find('manager').text().trim() || 'No Manager';
-                var instructionText = $(this).find('instruction_text').text().trim() || 'No Instruction';
-                var datetime = $(this).find('entry_time').text().trim() || 'No Date';
-                var ackop = $(this).data('ackop');
+                $instructions.each(function() {
+                    var id = $(this).attr('id');
+                    var date = $(this).find('date').text().trim() || 'No Date';
+                    var manager = $(this).find('manager').text().trim() || 'No Manager';
+                    var instructionText = $(this).find('instruction_text').text().trim() || 'No Instruction';
+                    var datetime = $(this).find('entry_time').text().trim() || 'No Date';
+                    var ackop = $(this).find('ackop').text().trim(); // Get the acknowledgment operator
 
-                instructionsArray.push({
-                    id: id,
-                    date: date,
-                    manager: manager,
-                    instructionText: instructionText,
-                    datetime: datetime,
-                    ackop: ackop
+                    instructionsArray.push({
+                        id: id,
+                        date: date,
+                        manager: manager,
+                        instructionText: instructionText,
+                        datetime: datetime,
+                        ackop: ackop
+                    });
                 });
-            });
 
-            // Sort instructions by ID in descending order
-            instructionsArray.sort(function(a, b) {
-                return parseInt(b.id, 10) - parseInt(a.id, 10);
-            });
+                // Sort instructions by ID in descending order
+                instructionsArray.sort(function(a, b) {
+                    return parseInt(b.id, 10) - parseInt(a.id, 10);
+                });
 
-            // Append new instructions
-            instructionsArray.forEach(function(instruction) {
-                // Check if the instruction already exists to avoid duplicates
-                if (!$(`#instructions-container .instruction-entry[data-id="${instruction.id}"]`).length) {
+                // Clear existing instructions in the container
+                $("#instructions-container").empty();
+
+                // Append sorted instructions to the container
+                instructionsArray.forEach(function(instruction) {
+                    // Create the HTML for each instruction
                     var instructionHTML = `
                         <div class="instruction-entry ${instruction.ackop === 'none' ? 'highlight-red' : ''}" data-id="${instruction.id}" data-ackop="${instruction.ackop}">
                             <h2>Management Instruction</h2>
@@ -111,22 +115,76 @@ $(document).ready(function() {
                             <p><strong>Manager:</strong> ${instruction.manager}</p>
                             <p><strong>Instruction:</strong> ${instruction.instructionText}</p>
                             <p><strong>Datetime:</strong> ${instruction.datetime}</p>
+                            ${instruction.ackop === 'none' ? '<button class="ack-button" data-id="' + instruction.id + '">ACK</button>' : '<p>Acknowledged by: ' + instruction.ackop + '</p>'}
                             <hr />
                         </div>
                     `;
+
+                    // Append the instruction HTML to the container
                     $("#instructions-container").append(instructionHTML);
-                }
-            });
+                });
 
-            $("#instructions-container").show(); // Show after loading
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to load the XML file:', textStatus, errorThrown);
-            $("#instructions-container").show(); // Ensure it's shown even on error
-        }
-    });
-}
+                // Reapply event handlers for the ACK button after instructions are reloaded
+                applyAckButtonHandlers();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Failed to load the XML file:', textStatus, errorThrown);
+            }
+        });
+    }
 
+    // Function to handle ACK button click events
+    function applyAckButtonHandlers() {
+        // Remove existing handlers to avoid duplicates
+        $('.ack-button').off('click');
+
+        // Attach click handler for ACK button
+        $('.ack-button').on('click', function() {
+            const $instruction = $(this).closest('.instruction-entry');
+            const instructionId = $instruction.data('id');
+            const ackop = $instruction.data('ackop');
+
+            if (ackop !== 'none') {
+                alert('This instruction has already been acknowledged.');
+                return;
+            }
+
+            // Show password prompt
+            const password = prompt('Enter your 4-digit password:');
+            if (password && /^[0-9]{4}$/.test(password)) {
+                // Send the password and instruction ID to the server
+                $.ajax({
+                    url: '../php/acknowledge_instruction.php',
+                    type: 'POST',
+                    data: {
+                        id: instructionId,
+                        password: password
+                    },
+                    success: function(response) {
+                        if (response.operatorName) {
+                            // Update instruction style and save the operator's name
+                            $instruction.css({
+                                'background-color': 'white',
+                                'color': 'black'
+                            }).data('ackop', response.operatorName);
+
+                            // Replace the ACK button with acknowledgment info
+                            $instruction.find('.ack-button').replaceWith('<p>Acknowledged by: ' + response.operatorName + '</p>');
+
+                            alert('Instruction acknowledged successfully by ' + response.operatorName);
+                        } else {
+                            alert('Incorrect password or acknowledgment failed.');
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while processing your request.');
+                    }
+                });
+            } else {
+                alert('Please enter a valid 4-digit password.');
+            }
+        });
+    }
 
     // Initialize loading
     loadInstructions(); // Load instructions first
