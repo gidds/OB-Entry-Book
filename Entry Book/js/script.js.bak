@@ -107,8 +107,8 @@ $(document).ready(function() {
                         <div class="instruction-entry ${instruction.ackop === 'none' ? 'highlight-red' : ''}" data-id="${instruction.id}" data-ackop="${instruction.ackop}">
                             <h2>Management Instruction</h2>
                             <h3>ID: ${instruction.id}</h3>
+							<p><strong>Manager:</strong> ${instruction.manager}</p>
                             <p><strong>Date:</strong> ${instruction.date}</p>
-                            <p><strong>Manager:</strong> ${instruction.manager}</p>
                             <p><strong>Instruction:</strong> ${instruction.instructionText}</p>
                             <p><strong>Datetime:</strong> ${instruction.datetime}</p>
                             <hr />

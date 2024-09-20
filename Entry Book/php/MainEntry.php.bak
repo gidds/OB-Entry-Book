@@ -46,32 +46,30 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
         <div id="instructions-container">
             <h2>Management Instructions</h2> <!-- Instructions header -->
 
-           <?php
-// Loop through each instruction in the XML file and display it
-foreach ($instructionsXml->instruction as $instruction) {
-    // Check the value of the ackop field
-    $ackop = (string)$instruction->ackop;
+            <?php
+            // Loop through each instruction in the XML file and display it
+            foreach ($instructionsXml->instruction as $instruction) {
+                // Check the value of the ackop field
+                $ackop = (string)$instruction->ackop;
 
-    // Apply a highlight class if the instruction is not acknowledged (ackop = '')
-    $highlightClass = $ackop === '' ? 'highlight-red' : '';
+                // Apply a highlight class if the instruction is not acknowledged (ackop = 'none')
+                $highlightClass = $ackop === 'none' ? 'highlight-red' : '';
 
-    echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
-    echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
-    echo '<p><strong>Instruction:</strong> ' . $instruction->instruction_text . '</p>';
-    echo '<p><strong>Date:</strong> ' . $instruction->date . '</p>';
+                echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
+				echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
+                echo '<p><strong>Instruction:</strong> ' . $instruction->instruction_text . '</p>';
+                echo '<p><strong>Date:</strong> ' . $instruction->date . '</p>';
 
-    // Show ACK button if the instruction is not acknowledged (ackop = 'none')
-    if ($ackop === 'none') {
-        echo '<button class="ack-button" data-id="' . $instruction['id'] . '">ACK</button>';
-    } else {
-        echo '<p><strong>Acknowledged by:</strong> ' . $ackop . '</p>';
-    }
+                // Show ACK button if the instruction is not acknowledged (ackop = 'none')
+                if ($ackop === 'none') {
+                    echo '<button class="ack-button" data-id="' . $instruction['id'] . '">ACK</button>';
+                } else {
+                    echo '<p><strong>Acknowledged by:</strong> ' . $ackop . '</p>';
+                }
 
-    echo '</div>';
-    echo '<hr>'; // Add a line after each instruction entry
-}
-?>
-
+                echo '</div>';
+            }
+            ?>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script> <!-- Load jQuery -->

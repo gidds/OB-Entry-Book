@@ -136,9 +136,3 @@ nav a:hover {
     border-radius: 5px; /* Apply rounded corners to the highlighted div */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add slight shadow for visibility */
 }
-
-#entry-container, #instructions-container {
-    transition: opacity 0.5s ease;
-    opacity: 1; /* Default opacity */
-}
-
