@@ -91,20 +91,32 @@ $(document).ready(function() {
                 customer: customer,
                 obentry: obentry // Send as 'obentry' to match the XML structure
             },
-            success: function() {
+            success: function(response) {
                 console.log('Entry added successfully!');
+                console.log(response);
                 // Optionally reset the form here
                 $('#add-entry-form')[0].reset();
                 // Re-enable the submit button
                 $submitButton.prop('disabled', false);
                 // Redirect to MainEntry.html
-                window.location.href = '../php/MainEntry.php';
+                setTimeout(function() {
+                    window.location.href = '../php/MainEntry.php';
+                }, 0);
             },
             error: function(xhr, status, error) {
                 console.error('Error adding entry: ' + error);
                 // Re-enable the submit button if there was an error
                 $submitButton.prop('disabled', false);
+            },
+            beforeSend: function(xhr) {
+                console.log('Sending data to server...', {
+                date: date,
+                ob_number: obNumber,
+                customer: customer,
+                obentry: obentry
+            });
             }
+
         });
     });
     

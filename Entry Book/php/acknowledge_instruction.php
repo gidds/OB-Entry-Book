@@ -1,26 +1,39 @@
 <?php
+
+// Prevent browser caching for this page
+header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1
+header('Pragma: no-cache'); // HTTP 1.0
+header('Expires: 0'); // Proxies
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
-    $password = $_POST['password'];
+    $password = trim($_POST['password']); // Trim whitespace from password
 
+    // Load authentication data
     $auth_file = '../data/auth.xml';
     $auth_xml = simplexml_load_file($auth_file);
+    if (!$auth_xml) {
+        echo 'Failed to load auth.xml';
+        exit();
+    } 
 
     // Check password and operator name validity
-    $operatorName = '';
+    $operatorName = null;
     foreach ($auth_xml->operator as $operator) {
+        echo 'Comparing with operator: ' . (string)$operator->name . ', Password: ' . (string)$operator->password . "\n"; // Debugging line
         if ((string)$operator->password === $password) {
             $operatorName = (string)$operator->name;
             break;
         }
     }
+    
 
-    if ($operatorName !== '') {
+    if ($operatorName !== null) {
         $xml_file = '../data/instructions.xml';
-        $xml = simplexml_load_file($xml_file);
+        $instructionsXml = simplexml_load_file($xml_file);
 
         // Find the instruction by ID
-        foreach ($xml->instruction as $instruction) {
+        foreach ($instructionsXml->instruction as $instruction) {
             if ((string)$instruction['id'] === $id) {
                 // Update the ackop field with the operator name
                 $instruction->ackop = $operatorName;
@@ -31,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // Save the updated XML file
-                $xml->asXML($xml_file);
-                echo 'success';
+                $instructionsXml->asXML($xml_file);
+                echo 'success:' . $operatorName; // Return operator name with success
                 exit();
             }
         }
@@ -44,5 +57,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo 'Invalid request';
 }
-
 ?>

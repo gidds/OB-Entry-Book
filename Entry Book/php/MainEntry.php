@@ -1,4 +1,49 @@
 <?php
+
+// Prevent browser caching for this page
+header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1
+header('Pragma: no-cache'); // HTTP 1.0
+header('Expires: 0'); // Proxies
+
+// Check if the request is an AJAX request, else display instructions
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+    // Load XML data for instructions
+    $instructionsXml = simplexml_load_file('../data/instructions.xml');
+
+    // Gather instructions into an array
+    $instructionsArray = [];
+    foreach ($instructionsXml->instruction as $instruction) {
+        $instructionsArray[] = $instruction;
+    }
+
+    // Sort the instructions by 'id' (or 'date')
+    usort($instructionsArray, function($a, $b) {
+        return (int)$b['id'] - (int)$a['id'];
+    });
+
+    // Loop through each sorted instruction and display it
+    foreach ($instructionsArray as $instruction) {
+        $ackop = (string)$instruction->ackop;
+        $highlightClass = $ackop === 'none' ? 'highlight-red' : '';
+
+        echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
+        echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
+        echo '<p><strong>Instruction:</strong> ' . $instruction->instruction_text . '</p>';
+        echo '<p><strong>Date:</strong> ' . $instruction->date . '</p>';
+
+        if ($ackop === 'none') {
+            echo '<button class="ack-button" data-id="' . $instruction['id'] . '">ACK</button>';
+        } else {
+            echo '<p><strong>Acknowledged by:</strong> ' . $ackop . '</p>';
+        }
+
+        echo '</div>';
+        echo '<hr>';
+    }
+
+    exit(); // Prevent loading the entire HTML
+}
+
 session_start();
 
 // Check if the user is logged in
@@ -63,8 +108,8 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
                // Check the value of the ackop field
                $ackop = (string)$instruction->ackop;
 
-               // Apply a highlight class if the instruction is not acknowledged (ackop = '')
-               $highlightClass = $ackop === '' ? 'highlight-red' : '';
+               // Apply a highlight class if the instruction is not acknowledged (ackop = 'none')
+               $highlightClass = $ackop === 'none' ? 'highlight-red' : '';
 
                echo '<div class="instruction-entry ' . $highlightClass . '" data-id="' . $instruction['id'] . '" data-ackop="' . $ackop . '">';
                echo '<p><strong>Manager:</strong> ' . $instruction->manager . '</p>';
@@ -88,8 +133,5 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
     <script src="../js/script.js" defer></script> <!-- Load the script.js -->
     <script src="../js/entryack.js" defer></script> <!-- Load entryack.js for ACK button logic -->
     <script src="../js/userlogged.js"></script> <!-- Load userlogged.js to handle user session -->
-	<!-- Countdown timer display commented out
-    <div id="countdown"></div>
-    -->
 </body>
 </html>

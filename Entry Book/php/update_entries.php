@@ -1,5 +1,5 @@
-<!-- update_entries.php -->
 <?php
+// update_entries.php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date = $_POST['date'];
     $ob_number = $_POST['ob_number'];
@@ -20,9 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_entry->addChild('obentry', $entry_text);
 
     // Save the updated XML
-    $xml->asXML($xml_file);
-
-    echo 'Entry added successfully!';
+    if ($xml->asXML($xml_file) === false) {
+        echo 'Failed to save XML file.';
+    } else {
+        echo 'Entry added successfully!';
+    }
 } else {
     echo 'Invalid request method';
 }

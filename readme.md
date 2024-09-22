@@ -12,9 +12,7 @@ High Priority
 
     Secure Login Database: Implement a secure database for managing passwords.
     Acknowledgment for Management Entry:
-        Add a button to each entry for acknowledgment and highlight or display a popup.
-        Update XML to reflect acknowledgment status.
-        Note: XML updates are not yet reflected in mainentry.php.
+        Password shows incorrect after sending correct password, and updates the xml as expected. To see why the error comes up - to be tesed with other browsers and systems for broader perspective. 
 
 In Progress
 
@@ -30,6 +28,7 @@ Completed
 
     Fix Login Issue: Ensure that mginstruct shows when logged in and remains visible across all pages.
     Sort Instructions: Sort instructions by the latest entry in mainentry.html. Currently using unique ID auto-increments for sorting management instructions.
+    ack button added with highlight of each new un-acknowledged entries. 
 
 Next Steps
 

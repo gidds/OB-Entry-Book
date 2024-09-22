@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (file_exists($xmlFile)) {
         $xml = simplexml_load_file($xmlFile);
         if ($xml === false) {
-            echo 'Failed to load XML file.';
+            echo 'Failed to load XML file. no exist';
             exit;
         }
     } else {
@@ -36,6 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newEntry->addChild('manager', htmlspecialchars($manager));
     $newEntry->addChild('instruction_text', htmlspecialchars($instruction));
     $newEntry->addChild('entry_time', date('Y-m-d H:i:s')); // Add current time of entry
+
+    //add ackop
+    $newEntry->addChild('ackop', 'none');
 
     // Convert the SimpleXMLElement to DOMDocument for formatting
     $dom = new DOMDocument('1.0');

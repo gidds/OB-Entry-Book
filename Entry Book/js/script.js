@@ -14,21 +14,17 @@ $(document).ready(function() {
                 var $entries = $(xml).find('entry');
                 var entriesArray = [];
 
-                $instructions.each(function() {
-                    var id = $(this).attr('id');
+                $entries.each(function() {
                     var date = $(this).find('date').text().trim() || 'No Date';
-                    var manager = $(this).find('manager').text().trim() || 'No Manager';
-                    var instructionText = $(this).find('instruction_text').text().trim() || 'No Instruction';
-                    var datetime = $(this).find('entry_time').text().trim() || 'No Date';
-                    var ackop = $(this).find('ackop').text().trim() || 'none'; // Set ackop to 'none' if missing
-                
-                    instructionsArray.push({
-                        id: id,
+                    var obNumber = $(this).find('ob_number').text().trim() || 'No OB Number';
+                    var customer = $(this).find('customer').text().trim() || 'No Customer';
+                    var obentry = $(this).find('obentry').text().trim() || 'No Entry';
+
+                    entriesArray.push({
                         date: date,
-                        manager: manager,
-                        instructionText: instructionText,
-                        datetime: datetime,
-                        ackop: ackop
+                        obNumber: obNumber,
+                        customer: customer,
+                        obentry: obentry
                     });
                 });
                 
@@ -46,7 +42,7 @@ $(document).ready(function() {
                     var entryHTML = `
                         <div>
                             <h2>OB Entry</h2>
-                            <h3>Entry ${entry.id}</h3>
+                            <h3>Entry Details</h3>
                             ${entry.date !== 'No Date' ? `<p><strong>Date:</strong> ${entry.date}</p>` : ''}
                             ${entry.obNumber ? `<p><strong>OB Number:</strong> ${entry.obNumber}</p>` : ''}
                             ${entry.customer ? `<p><strong>Customer:</strong> ${entry.customer}</p>` : ''}
@@ -187,8 +183,9 @@ $(document).ready(function() {
     }
 
     // Initialize loading
-    loadInstructions(); // Load instructions first
     loadEntries(); // Then load entries
+    loadInstructions(); // Load instructions first
+    
 
     // Set up interval to reload entries only
     setInterval(function() {
