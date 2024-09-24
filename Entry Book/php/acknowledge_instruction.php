@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check password and operator name validity
     $operatorName = null;
     foreach ($auth_xml->operator as $operator) {
-        echo 'Comparing with operator: ' . (string)$operator->name . ', Password: ' . (string)$operator->password . "\n"; // Debugging line
         if ((string)$operator->password === $password) {
             $operatorName = (string)$operator->name;
             break;

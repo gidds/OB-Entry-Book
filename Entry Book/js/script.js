@@ -129,57 +129,11 @@ $(document).ready(function() {
         });
     }
 
+    
     // Function to handle ACK button click events
     function applyAckButtonHandlers() {
         // Remove existing handlers to avoid duplicates
         $('.ack-button').off('click');
-
-        // Attach click handler for ACK button
-        $('.ack-button').on('click', function() {
-            const $instruction = $(this).closest('.instruction-entry');
-            const instructionId = $instruction.data('id');
-            const ackop = $instruction.data('ackop');
-
-            if (ackop !== 'none') {
-                alert('This instruction has already been acknowledged.');
-                return;
-            }
-
-            // Show password prompt
-            const password = prompt('Enter your 4-digit password:');
-            if (password && /^[0-9]{4}$/.test(password)) {
-                // Send the password and instruction ID to the server
-                $.ajax({
-                    url: '../php/acknowledge_instruction.php',
-                    type: 'POST',
-                    data: {
-                        id: instructionId,
-                        password: password
-                    },
-                    success: function(response) {
-                        if (response.operatorName) {
-                            // Update instruction style and save the operator's name
-                            $instruction.css({
-                                'background-color': 'white',
-                                'color': 'black'
-                            }).data('ackop', response.operatorName);
-
-                            // Replace the ACK button with acknowledgment info
-                            $instruction.find('.ack-button').replaceWith('<p>Acknowledged by: ' + response.operatorName + '</p>');
-
-                            alert('Instruction acknowledged successfully by ' + response.operatorName);
-                        } else {
-                            alert('Incorrect password or acknowledgment failed.');
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while processing your request.');
-                    }
-                });
-            } else {
-                alert('Please enter a valid 4-digit password.');
-            }
-        });
     }
 
     // Initialize loading
@@ -187,8 +141,9 @@ $(document).ready(function() {
     loadInstructions(); // Load instructions first
     
 
-    // Set up interval to reload entries only
+    // Set up interval to reload xml files
     setInterval(function() {
         loadEntries(); // Reload entries only
+        loadInstructions();
     }, refreshInterval);
 });
