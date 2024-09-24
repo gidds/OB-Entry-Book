@@ -4,6 +4,7 @@
         |-- login.css
         |-- mainentry.css
         |-- mginstruct.css
+        |-- search.css
     |-- data
         |-- auth.xml
         |-- entries.xml
@@ -11,6 +12,7 @@
     |-- html
         |-- login.html
     |-- index.html
+    |-- index.php
     |-- js
         |-- entryack.js
         |-- entryscript.js
@@ -25,11 +27,11 @@
         |-- add-entry.php
         |-- add_instruction.php
         |-- login.php
+        |-- menu.php
         |-- mgmtinstruct.php
-        |-- search_entries.php
+        |-- search-entries.php
         |-- update_entries.php
 |-- LICENSE
 |-- codesave.txt
 |-- console-export-2024-9-24_7-7-17.txt
-|-- index.php
 |-- readme.md

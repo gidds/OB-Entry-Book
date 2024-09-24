@@ -121,7 +121,7 @@ $(document).ready(function() {
                 });
 
                 // Reapply event handlers for the ACK button after instructions are reloaded
-                applyAckButtonHandlers();
+                //applyAckButtonHandlers();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Failed to load the XML file:', textStatus, errorThrown);

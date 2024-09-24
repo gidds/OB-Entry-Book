@@ -13,6 +13,7 @@
         <ul>
             <li><a href="../php/MainEntry.php">Home</a></li>
             <li><a href="../php/add-entry.php">Add Entry</a></li>
+        <li><a href="../php/search-entries.php">Search Entries</a></li> <!-- New Search Entries link -->
             <li><a href="../php/mgmtinstruct.php">Management Instructions</a></li>
         </ul>
     </nav>

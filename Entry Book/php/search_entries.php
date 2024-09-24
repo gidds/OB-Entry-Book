@@ -1,1 +1,0 @@
-/** Make a search page or function to search for entries in @mainentry.php */

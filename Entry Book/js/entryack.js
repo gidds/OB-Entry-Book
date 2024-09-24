@@ -27,7 +27,7 @@ $(document).ready(function() {
             console.info('Password Entered');
 
             if (password && /^[0-9]{4}$/.test(password)) {
-                console.info('Sending password using Ajax');
+                //console.info('Sending password using Ajax');
                 $('#loader').show(); // Show loader
 
                 $.ajax({
@@ -38,7 +38,7 @@ $(document).ready(function() {
                         password: password
                     },
                     success: function(response) {
-                        console.info('ACK response received');
+                        //console.info('ACK response received');
                         $('#loader').hide(); // Hide loader
                         
                         if (response.includes('success:')) {
@@ -57,7 +57,7 @@ $(document).ready(function() {
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error('Error during the ACK request:', error);
+                        //console.error('Error during the ACK request:', error);
                         $('#loader').hide();
                         alert('An error occurred. Please try again.');
                     }
@@ -75,13 +75,13 @@ $(document).ready(function() {
             type: 'GET',
             success: function(response) {
                 $('#instructions-container').html(response);
-                console.info('Instructions container updated');
+                //console.info('Instructions container updated');
 
                 // Re-bind the event handler after content is loaded
                 bindAckButtonEvents();
             },
             error: function(xhr, status, error) {
-                console.error('Error while loading instructions:', error);
+                //console.error('Error while loading instructions:', error);
                 alert('Failed to load instructions. Please try again.');
             }
         });

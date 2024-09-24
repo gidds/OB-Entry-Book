@@ -75,6 +75,7 @@ $instructionsXml = simplexml_load_file('../data/instructions.xml');
         <ul>
             <li><a href="../php/MainEntry.php">Home</a></li> <!-- Home link -->
             <li><a href="../php/add-entry.php">Add Entry</a></li> <!-- Add Entry link -->
+            <li><a href="../php/search-entries.php">Search Entries</a></li> <!-- New Search Entries link -->
             <?php
             // Show login or management instructions link based on user session
             echo $loginLink;
