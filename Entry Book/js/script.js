@@ -131,10 +131,10 @@ $(document).ready(function() {
 
     
     // Function to handle ACK button click events
-    function applyAckButtonHandlers() {
+    /*function applyAckButtonHandlers() {
         // Remove existing handlers to avoid duplicates
         $('.ack-button').off('click');
-    }
+    }*/
 
     // Initialize loading
     loadEntries(); // Then load entries
@@ -144,6 +144,5 @@ $(document).ready(function() {
     // Set up interval to reload xml files
     setInterval(function() {
         loadEntries(); // Reload entries only
-        loadInstructions();
     }, refreshInterval);
 });

@@ -72,21 +72,21 @@
         <manager>Manager 2</manager>
         <instruction_text>Test entry added with none statement</instruction_text>
         <entry_time>2024-09-19 21:06:43</entry_time>
-        <ackop>none</ackop>
+        <ackop>John Doe</ackop>
     </instruction>
     <instruction id="12">
         <date>2024-09-19</date>
         <manager>Manager 2</manager>
         <instruction_text>Test entry added with none statement</instruction_text>
         <entry_time>2024-09-19 21:06:47</entry_time>
-        <ackop>none</ackop>
+        <ackop>John Doe</ackop>
     </instruction>
     <instruction id="13">
         <date>2024-09-19</date>
         <manager>Manager 4</manager>
         <instruction_text>Test 12th instruction before continueing code</instruction_text>
         <entry_time>2024-09-19 21:10:50</entry_time>
-        <ackop>none</ackop>
+        <ackop>Jane Doe</ackop>
     </instruction>
     <instruction id="14">
         <date>2024-09-19</date>

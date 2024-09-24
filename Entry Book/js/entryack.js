@@ -71,7 +71,7 @@ $(document).ready(function() {
     // Function to load and display instructions (with cache busting)
     function loadInstructions() {
         $.ajax({
-            url: '../php/MainEntry.php?t=' + new Date().getTime(), // Cache-busting with timestamp
+            url: `../php/MainEntry.php?t=${new Date().getTime()}`, // Cache-busting with timestamp
             type: 'GET',
             success: function(response) {
                 $('#instructions-container').html(response);
@@ -88,7 +88,7 @@ $(document).ready(function() {
     }
 
     // Initial binding of ACK button events
-    //bindAckButtonEvents();
+    bindAckButtonEvents();
 // Load instructions
     loadInstructions();
 });
