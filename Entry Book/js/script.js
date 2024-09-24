@@ -129,16 +129,9 @@ $(document).ready(function() {
         });
     }
 
-    
-    // Function to handle ACK button click events
-    /*function applyAckButtonHandlers() {
-        // Remove existing handlers to avoid duplicates
-        $('.ack-button').off('click');
-    }*/
-
     // Initialize loading
     loadEntries(); // Then load entries
-    loadInstructions(); // Load instructions first
+    loadInstructions(); // Load instructions 
     
 
     // Set up interval to reload xml files

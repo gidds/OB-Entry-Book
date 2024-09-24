@@ -10,6 +10,7 @@
         |-- instructions.xml
     |-- html
         |-- login.html
+    |-- index.html
     |-- js
         |-- entryack.js
         |-- entryscript.js
@@ -30,4 +31,5 @@
 |-- LICENSE
 |-- codesave.txt
 |-- console-export-2024-9-24_7-7-17.txt
+|-- index.php
 |-- readme.md
