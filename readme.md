@@ -1,28 +1,20 @@
-Entry Book
+Digital Security Occurence Book 
 
-A web application for managing entries with management requests.
-Features
+This system was built on request of a family members needs.
 
-    Auto-generate unique OB numbers
-    View and manage entries in a table format
-    Login functionality for management instructions
-    Secure storage of manager passwords (pending)
+The function of this system is to have a centralised control room receive information from security officers and record the information on the system.
+Information may include:
+ -Deliveries
+ -Collections
+ -Theft
+ -Incidents
+ -Site instructions
+ -After Hour Deliveries
+ -After Hour Collections
 
-High Priority
+The system has a entry side to view entries made by controllers on the left, and a management isntruction on the right so that management can inform controllers of special instructions. 
+Instructions can be acknowledged by controllers with unique passwords to identify which controller acknowledged the instructions.
 
-    Secure Login Database: Implement a secure database for managing passwords.
-    
+This is still a work in progress and has been written in HTML, PHP and uses XML for data storage. 
 
-In Progress
 
-    Search Functionality: Add a search page to list and manage entries.
-    Enhanced Login Security: Explore options like Hashed JSON, Local Storage, IndexedDB, or authentication libraries such as Auth0 and Okta for secure management logins.
-
-Pending
-
-    Manage Customer Entries: Create pages for adding and removing customer entries.
-    Search Box: Implement a search box on the mainentry page to search OB Entries.
-
-License
-
-This project is licensed under the MIT License.
