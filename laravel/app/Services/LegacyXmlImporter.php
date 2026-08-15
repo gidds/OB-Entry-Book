@@ -29,14 +29,10 @@ class LegacyXmlImporter
         }
 
         return DB::transaction(function () use ($files): array {
-            $operators = $this->importOperators($files['auth']);
-            $entries = $this->importEntries($files['entries']);
-            $instructions = $this->importInstructions($files['instructions']);
-
             return [
-                'operators' => $operators,
-                'entries' => $entries,
-                'instructions' => $instructions,
+                'operators' => $this->importOperators($files['auth']),
+                'entries' => $this->importEntries($files['entries']),
+                'instructions' => $this->importInstructions($files['instructions']),
             ];
         });
     }
@@ -62,8 +58,8 @@ class LegacyXmlImporter
         $xml = $this->xml($path);
         $count = 0;
 
-        foreach ($xml->operator as $index => $operator) {
-            $legacyKey = 'auth.xml:operator:'.$index;
+        foreach ($xml->operator as $operator) {
+            $legacyKey = 'auth.xml:operator:'.$count;
             $name = trim((string) $operator->name);
             $pin = trim((string) $operator->password);
 
@@ -87,7 +83,7 @@ class LegacyXmlImporter
         $xml = $this->xml($path);
         $count = 0;
 
-        foreach ($xml->entry as $index => $entry) {
+        foreach ($xml->entry as $entry) {
             $legacyId = trim((string) $entry['id']);
             $date = trim((string) $entry->date);
             $obNumber = trim((string) $entry->ob_number);
@@ -95,7 +91,7 @@ class LegacyXmlImporter
             $text = trim((string) $entry->obentry);
 
             $legacyKey = 'entries.xml:'.hash('sha256', implode('|', [
-                (string) $index,
+                (string) $count,
                 $legacyId,
                 $date,
                 $obNumber,
@@ -125,13 +121,14 @@ class LegacyXmlImporter
         $xml = $this->xml($path);
         $count = 0;
 
-        foreach ($xml->instruction as $index => $item) {
+        foreach ($xml->instruction as $item) {
             $legacyId = trim((string) $item['id']);
             $manager = trim((string) $item->manager);
             $entryTime = trim((string) $item->entry_time);
+            $identity = $legacyId !== '' ? $legacyId : 'index:'.$count;
 
             $instruction = ManagementInstruction::updateOrCreate(
-                ['legacy_id' => $legacyId !== '' ? $legacyId : 'index:'.$index],
+                ['legacy_id' => $identity],
                 [
                     'instruction_date' => trim((string) $item->date),
                     'manager_name' => $manager !== '' ? $manager : 'Legacy management',
@@ -147,10 +144,7 @@ class LegacyXmlImporter
                     ->whereRaw('LOWER(name) = ?', [strtolower($acknowledgedBy)])
                     ->first();
 
-                $query = $instruction->acknowledgements()
-                    ->where('operator_name', $acknowledgedBy);
-
-                if (! $query->exists()) {
+                if (! $instruction->acknowledgements()->where('operator_name', $acknowledgedBy)->exists()) {
                     $instruction->acknowledgements()->create([
                         'user_id' => $operator?->id,
                         'operator_name' => $acknowledgedBy,
