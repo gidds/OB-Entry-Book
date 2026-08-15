@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('occurrence_entries', function (Blueprint $table): void {
             $table->id();
-            $table->string('ob_number')->unique();
+            $table->string('ob_number')->index();
             $table->date('occurred_on')->index();
             $table->string('customer')->nullable()->index();
             $table->text('entry_text');
-            $table->string('legacy_id')->nullable()->unique();
+            $table->string('legacy_id')->nullable()->index();
+            $table->string('legacy_key')->nullable()->unique();
             $table->timestamps();
         });
     }
