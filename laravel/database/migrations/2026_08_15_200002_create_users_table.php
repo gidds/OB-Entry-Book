@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('role')->default('controller')->index();
             $table->string('pin_hash')->nullable();
+            $table->string('legacy_key')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });
