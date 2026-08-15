@@ -2,7 +2,10 @@
 
 ## Current
 - [ ] Re-test a fresh clone/browser boot on the PC using `composer install` then `composer setup`.
-- [ ] Confirm the latest full GitHub Actions run is green after sequence/search/provisioning changes.
+- [ ] On the PC, run the real legacy import and inspect imported OB entries/instructions in the browser.
+- [ ] Provision a test manager and controller with `ob:create-user` and test the complete browser workflow.
+- [ ] Create a new OB entry after legacy import and verify the monthly sequence continues correctly from imported historical data.
+- [ ] Test management login, instruction creation, logout and controller PIN acknowledgement through the browser.
 - [ ] Review and remove the temporary `laravel-rebuild-runtime-temp` branch created during connector testing.
 - [ ] Add a small admin/user-management web interface if command-line provisioning proves inconvenient.
 
@@ -24,6 +27,9 @@
 - [x] Add `--dry-run` legacy import mode.
 - [x] Add secure CLI provisioning for controllers/managers/admins.
 - [x] Add CI environment preparation so tests do not warn about missing `.env`.
+- [x] Confirm full GitHub Actions suite is green after sequence/search/provisioning changes.
+- [x] Validate the full Laravel test suite on Samsung S23 Ultra/Termux: 25 tests, 76 assertions, all passing.
+- [x] Validate the real legacy XML dry-run on Samsung/Termux: 2 operators, 15 OB entries and 15 instructions parsed successfully.
 
 ## Next functional work
 - [ ] Review the old search page in detail for date-range/filter behavior worth carrying forward.
