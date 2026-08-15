@@ -16,6 +16,7 @@ class User extends Authenticatable
         'password',
         'role',
         'pin_hash',
+        'legacy_key',
     ];
 
     protected $hidden = [
