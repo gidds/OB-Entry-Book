@@ -12,14 +12,26 @@ use Illuminate\View\View;
 
 class OccurrenceEntryController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $search = trim((string) $request->query('q', ''));
+
+        $entries = OccurrenceEntry::query()
+            ->when($search !== '', function ($query) use ($search): void {
+                $query->where(function ($query) use ($search): void {
+                    $query->where('ob_number', 'like', '%'.$search.'%')
+                        ->orWhere('customer', 'like', '%'.$search.'%')
+                        ->orWhere('entry_text', 'like', '%'.$search.'%');
+                });
+            })
+            ->latest('occurred_on')
+            ->latest('id')
+            ->limit(100)
+            ->get();
+
         return view('entries.index', [
-            'entries' => OccurrenceEntry::query()
-                ->latest('occurred_on')
-                ->latest('id')
-                ->limit(100)
-                ->get(),
+            'entries' => $entries,
+            'search' => $search,
             'instructions' => ManagementInstruction::query()
                 ->with('acknowledgements')
                 ->latest('id')
