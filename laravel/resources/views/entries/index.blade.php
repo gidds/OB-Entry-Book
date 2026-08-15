@@ -13,6 +13,19 @@
             <a class="button" href="{{ route('entries.create') }}">Add Entry</a>
         </div>
 
+        <div class="panel" style="margin-bottom:1rem">
+            <form method="get" action="{{ route('entries.index') }}" style="display:flex;gap:.5rem;align-items:end;flex-wrap:wrap">
+                <label for="q" style="flex:1;min-width:220px;margin-top:0">
+                    Search OB history
+                    <input id="q" name="q" value="{{ $search }}" placeholder="OB number, customer or entry text">
+                </label>
+                <button type="submit">Search</button>
+                @if($search !== '')
+                    <a class="button" href="{{ route('entries.index') }}">Clear</a>
+                @endif
+            </form>
+        </div>
+
         <div class="panel">
             @forelse($entries as $entry)
                 <article class="entry">
@@ -26,7 +39,7 @@
                     <p>{{ $entry->entry_text }}</p>
                 </article>
             @empty
-                <p>No OB entries yet.</p>
+                <p>{{ $search !== '' ? 'No OB entries matched your search.' : 'No OB entries yet.' }}</p>
             @endforelse
         </div>
     </section>
