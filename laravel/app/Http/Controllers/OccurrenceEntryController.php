@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ManagementInstruction;
 use App\Models\OccurrenceEntry;
 use App\Services\ObNumberGenerator;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +19,11 @@ class OccurrenceEntryController extends Controller
                 ->latest('occurred_on')
                 ->latest('id')
                 ->limit(100)
+                ->get(),
+            'instructions' => ManagementInstruction::query()
+                ->with('acknowledgements')
+                ->latest('id')
+                ->limit(50)
                 ->get(),
         ]);
     }
