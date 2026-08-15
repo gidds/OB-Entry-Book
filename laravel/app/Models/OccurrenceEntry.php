@@ -12,6 +12,7 @@ class OccurrenceEntry extends Model
         'customer',
         'entry_text',
         'legacy_id',
+        'legacy_key',
     ];
 
     protected function casts(): array
