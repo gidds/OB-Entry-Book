@@ -38,5 +38,8 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist
 
+      - name: Prepare test environment
+        run: cp .env.example .env
+
       - name: Run Laravel tests
         run: php artisan test --display-warnings
