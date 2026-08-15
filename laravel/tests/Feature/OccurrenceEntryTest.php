@@ -40,7 +40,7 @@ class OccurrenceEntryTest extends TestCase
         $response->assertRedirect('/');
         $this->assertDatabaseHas('occurrence_entries', [
             'ob_number' => '1\\8\\2026',
-            'occurred_on' => '2026-08-15',
+            'occurred_on' => '2026-08-15 00:00:00',
             'customer' => 'Autocast',
             'entry_text' => 'Security officer reported a delivery at the main gate.',
         ]);
