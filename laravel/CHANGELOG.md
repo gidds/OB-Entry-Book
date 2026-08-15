@@ -33,8 +33,12 @@
 - Legacy duplicate entries are preserved rather than discarded to satisfy a new database constraint.
 
 ### Testing notes
-- Samsung/Termux confirmed Composer installation and Laravel package discovery.
+- Samsung/Termux initially confirmed Composer installation and Laravel package discovery.
 - The first phone browser test returned HTTP 500 while the hand-built scaffold still lacked runtime environment setup.
-- GitHub Actions later identified the test warning as a missing `.env`; environment/runtime defaults have since been committed.
+- GitHub Actions later identified the test warning as a missing `.env`; environment/runtime defaults were then committed.
 - Occurrence-entry tests passed after correcting the SQLite date assertion.
 - The real legacy XML migration safety suite passed, including idempotency, source-file integrity, hashed PIN verification and duplicate historical OB preservation.
+- Latest full GitHub Actions run completed successfully after the sequence, search and user-provisioning changes.
+- Samsung S23 Ultra/Termux subsequently ran the complete Laravel suite successfully: **25 tests passed, 76 assertions, 0 failures** in 9.31 seconds.
+- Samsung S23 Ultra/Termux also successfully ran `php artisan ob:import-legacy --dry-run` against the preserved legacy XML and parsed **2 operators, 15 OB entries and 15 management instructions** without writing database changes.
+- PC fresh-clone/browser validation and real user provisioning remain intentionally deferred to the next test session.
