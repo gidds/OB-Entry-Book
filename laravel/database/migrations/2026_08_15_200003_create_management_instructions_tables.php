@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('operator_name');
             $table->timestamp('acknowledged_at')->nullable();
-            $table->unique(['management_instruction_id', 'user_id']);
+            $table->unique(['management_instruction_id', 'user_id'], 'instruction_ack_user_unique');
         });
     }
 
