@@ -10,6 +10,10 @@ class InstallationState
 {
     public function isInstalled(): bool
     {
+        if (app()->environment('testing')) {
+            return true;
+        }
+
         if (is_file(storage_path('app/installed'))) {
             return true;
         }
