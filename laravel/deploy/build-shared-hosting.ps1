@@ -16,7 +16,13 @@ composer install --working-dir="$AppRoot" --no-dev --optimize-autoloader --no-in
 Copy-Item (Join-Path $LaravelRoot 'public\*') $PublicRoot -Recurse -Force
 Copy-Item (Join-Path $PSScriptRoot 'shared-hosting-index.php') (Join-Path $PublicRoot 'index.php') -Force
 $keyBytes = New-Object byte[] 32
-[System.Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+try {
+    $rng.GetBytes($keyBytes)
+}
+finally {
+    if ($null -ne $rng) { $rng.Dispose() }
+}
 $appKey = 'base64:' + [Convert]::ToBase64String($keyBytes)
 $env = @"
 APP_NAME="OB Entry Book"
