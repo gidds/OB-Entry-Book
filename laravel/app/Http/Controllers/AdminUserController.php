@@ -54,6 +54,77 @@ class AdminUserController extends Controller
         return back()->with('status', 'User created successfully.');
     }
 
+    public function edit(Request $request, User $user): View
+    {
+        $this->authorizeAdmin($request);
+
+        return view('admin.users.edit', [
+            'managedUser' => $user,
+        ]);
+    }
+
+    public function update(Request $request, User $user): RedirectResponse
+    {
+        $this->authorizeAdmin($request);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'role' => ['required', Rule::in(['controller', 'manager', 'admin'])],
+            'username' => [
+                'nullable',
+                'string',
+                'max:100',
+                'alpha_dash',
+                Rule::unique('users', 'username')->ignore($user->id),
+            ],
+            'password' => ['nullable', 'string', 'min:10'],
+            'pin' => ['nullable', 'digits_between:4,10'],
+        ]);
+
+        if ($user->role === 'admin'
+            && $validated['role'] !== 'admin'
+            && User::query()->where('role', 'admin')->count() <= 1) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['user' => 'The last administrator cannot be changed to another role.']);
+        }
+
+        if (in_array($validated['role'], ['manager', 'admin'], true)) {
+            if (empty($validated['username'])) {
+                return back()->withInput($request->except(['password', 'pin']))
+                    ->withErrors(['user' => 'Managers and admins require a username.']);
+            }
+
+            if (empty($user->password) && empty($validated['password'])) {
+                return back()->withInput($request->except(['password', 'pin']))
+                    ->withErrors(['user' => 'This management user requires a password.']);
+            }
+        }
+
+        if ($validated['role'] === 'controller'
+            && empty($user->pin_hash)
+            && empty($validated['pin'])) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['user' => 'This controller requires a PIN.']);
+        }
+
+        $user->name = $validated['name'];
+        $user->role = $validated['role'];
+        $user->username = $validated['username'] ?: null;
+
+        if (! empty($validated['password'])) {
+            $user->password = $validated['password'];
+        }
+
+        if (! empty($validated['pin'])) {
+            $user->pin_hash = Hash::make($validated['pin']);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users.index')
+            ->with('status', $user->name.' updated successfully.');
+    }
+
     private function authorizeAdmin(Request $request): void
     {
         abort_unless($request->user()?->role === 'admin', 403);
