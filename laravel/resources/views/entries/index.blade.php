@@ -85,4 +85,22 @@
         </div>
     </aside>
 </div>
+
+<script>
+    (() => {
+        const refreshIntervalMs = 30000;
+        const editableElements = ['INPUT', 'TEXTAREA', 'SELECT'];
+
+        window.setInterval(() => {
+            const active = document.activeElement;
+
+            // Do not reload while an operator is typing/searching/entering a PIN.
+            if (active && editableElements.includes(active.tagName)) {
+                return;
+            }
+
+            window.location.reload();
+        }, refreshIntervalMs);
+    })();
+</script>
 @endsection
