@@ -32,6 +32,8 @@
 - [x] Validate the real legacy XML dry-run on Samsung/Termux: 2 operators, 15 OB entries and 15 instructions parsed successfully.
 
 ## Next functional work
+- [ ] Add customer filter to OB history/dashboard.
+- [ ] Add XML export for managers and administrators.
 - [ ] Review the old search page in detail for date-range/filter behavior worth carrying forward.
 - [ ] Add pagination rather than the temporary 100-entry dashboard limit.
 - [ ] Add management-instruction history/filtering and optional archived state.
