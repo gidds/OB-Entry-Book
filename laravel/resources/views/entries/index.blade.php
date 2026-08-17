@@ -31,7 +31,7 @@
                 <article class="entry">
                     <div>
                         <strong>{{ $entry->ob_number }}</strong>
-                        <span class="muted">· {{ $entry->occurred_on->format('d M Y') }}</span>
+                        <span class="muted">· {{ $entry->occurred_on->format('d M Y') }} · {{ $entry->created_at->format('H:i') }}</span>
                     </div>
                     @if($entry->customer)
                         <div><strong>Customer:</strong> {{ $entry->customer }}</div>
