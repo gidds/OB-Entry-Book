@@ -8,7 +8,7 @@
         <div class="top-actions">
             <div>
                 <h1 style="margin:0">OB Entries</h1>
-                <div class="muted">Latest occurrence-book entries</div>
+                <div class="muted">Latest occurrence-book entries · Refresh in <span id="refresh-countdown">30</span>s</div>
             </div>
             <a class="button" href="{{ route('entries.create') }}">Add Entry</a>
         </div>
@@ -88,19 +88,36 @@
 
 <script>
     (() => {
-        const refreshIntervalMs = 30000;
+        const refreshSeconds = 30;
         const editableElements = ['INPUT', 'TEXTAREA', 'SELECT'];
+        const countdown = document.getElementById('refresh-countdown');
+        let remaining = refreshSeconds;
+
+        const renderCountdown = () => {
+            if (countdown) {
+                countdown.textContent = String(remaining);
+            }
+        };
+
+        renderCountdown();
 
         window.setInterval(() => {
             const active = document.activeElement;
+            const operatorIsEditing = active && editableElements.includes(active.tagName);
 
-            // Do not reload while an operator is typing/searching/entering a PIN.
-            if (active && editableElements.includes(active.tagName)) {
+            if (operatorIsEditing) {
+                remaining = refreshSeconds;
+                renderCountdown();
                 return;
             }
 
-            window.location.reload();
-        }, refreshIntervalMs);
+            remaining -= 1;
+            renderCountdown();
+
+            if (remaining <= 0) {
+                window.location.reload();
+            }
+        }, 1000);
     })();
 </script>
 @endsection
