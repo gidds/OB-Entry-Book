@@ -35,8 +35,11 @@
 - [ ] Add a control-room login layer so unauthenticated visitors cannot view OB entries or management instructions; controllers use their existing PIN credentials and managers/admins retain username/password access.
 - [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
 - [ ] Add customer filter to OB history/dashboard.
+- [ ] Keep the operator Customer/Site field as simple free text rather than forcing a dropdown/autocomplete workflow.
+- [ ] Add customer/site alias learning: map different spellings, abbreviations and common operator variants to one canonical customer/site for filtering and reports.
+- [ ] Add a manager/admin review area for unknown or ambiguous customer/site names, allowing management to confirm which canonical customer/site each variant belongs to; retain confirmed mappings for future entries.
 - [ ] Add XML export for managers and administrators.
-- [ ] Add manager/admin weekly report export grouped or filtered by site/customer name mentioned in OB entries.
+- [ ] Add manager/admin weekly report export grouped or filtered by canonical site/customer while preserving the operator's original entered text.
 - [ ] Review the old search page in detail for date-range/filter behavior worth carrying forward.
 - [ ] Add pagination rather than the temporary 100-entry dashboard limit.
 - [ ] Add management-instruction history/filtering and optional archived state.
