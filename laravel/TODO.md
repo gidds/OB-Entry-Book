@@ -33,7 +33,13 @@
 - [x] Validate the real legacy XML dry-run on Samsung/Termux: 2 operators, 15 OB entries and 15 instructions parsed successfully.
 
 ## Next functional work
-- [ ] Add a control-room login layer so unauthenticated visitors cannot view OB entries or management instructions; controllers use their existing PIN credentials and managers/admins retain username/password access.
+- [ ] After approximately two weeks of operator familiarisation, add the control-room access layer rather than changing the current live workflow immediately.
+- [ ] Allow trusted office public IP address(es) to open the normal controller dashboard without a login; keep trusted IPs configurable rather than hard-coded.
+- [ ] Require authentication when the OB site is accessed from outside the trusted office public IP address(es).
+- [ ] Use one login screen rather than separate controller and management login pages: controllers authenticate with their unique PIN credentials, while managers/admins retain username/password authentication.
+- [ ] Keep management/admin functions protected by management authentication even when the request originates from the trusted office public IP.
+- [ ] After operators are comfortable with the new system, require the controller's unique PIN when saving an OB entry so the posting controller is recorded automatically for traceability; do not introduce this requirement during the initial familiarisation period.
+- [ ] Keep the existing controller PIN acknowledgement flow for management instructions.
 - [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
 - [ ] Add customer filter to OB history/dashboard.
 - [ ] Keep the operator Customer/Site field as simple free text rather than forcing a dropdown/autocomplete workflow.
