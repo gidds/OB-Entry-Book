@@ -32,8 +32,11 @@
 - [x] Validate the real legacy XML dry-run on Samsung/Termux: 2 operators, 15 OB entries and 15 instructions parsed successfully.
 
 ## Next functional work
+- [ ] Add a control-room login layer so unauthenticated visitors cannot view OB entries or management instructions; controllers use their existing PIN credentials and managers/admins retain username/password access.
+- [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
 - [ ] Add customer filter to OB history/dashboard.
 - [ ] Add XML export for managers and administrators.
+- [ ] Add manager/admin weekly report export grouped or filtered by site/customer name mentioned in OB entries.
 - [ ] Review the old search page in detail for date-range/filter behavior worth carrying forward.
 - [ ] Add pagination rather than the temporary 100-entry dashboard limit.
 - [ ] Add management-instruction history/filtering and optional archived state.
