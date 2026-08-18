@@ -52,4 +52,27 @@ class OccurrenceSearchTest extends TestCase
             ->assertSeeText('Camera incident reported by the controller.')
             ->assertDontSeeText('Delivery received at the main gate.');
     }
+
+    public function test_dashboard_paginates_entries_instead_of_hiding_history(): void
+    {
+        for ($number = 3; $number <= 29; $number++) {
+            OccurrenceEntry::create([
+                'ob_number' => $number.'\\8\\2026',
+                'occurred_on' => '2026-08-16',
+                'customer' => 'Pagination Test',
+                'entry_text' => 'Pagination marker '.$number,
+            ]);
+        }
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSeeText('Page 1 of 2')
+            ->assertSeeText('Pagination marker 29')
+            ->assertDontSeeText('Delivery received at the main gate.');
+
+        $this->get('/?page=2')
+            ->assertOk()
+            ->assertSeeText('Page 2 of 2')
+            ->assertSeeText('Delivery received at the main gate.');
+    }
 }
