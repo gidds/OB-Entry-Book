@@ -20,6 +20,7 @@
 - [x] Add controller PIN acknowledgement with hashed PIN storage.
 - [x] Build the two-column control-room dashboard: OB entries left, management instructions right.
 - [x] Add occurrence search/history.
+- [x] Add paginated OB history/dashboard instead of a fixed 100-entry display limit.
 - [x] Add idempotent XML importer for entries, instructions, acknowledgements and operators.
 - [x] Preserve legacy identifiers/keys for traceability.
 - [x] Preserve duplicate historical OB numbers found in legacy XML.
@@ -41,7 +42,6 @@
 - [ ] Add XML export for managers and administrators.
 - [ ] Add manager/admin weekly report export grouped or filtered by canonical site/customer while preserving the operator's original entered text.
 - [ ] Review the old search page in detail for date-range/filter behavior worth carrying forward.
-- [ ] Add pagination rather than the temporary 100-entry dashboard limit.
 - [ ] Add management-instruction history/filtering and optional archived state.
 - [ ] Decide whether every controller must ACK each instruction or whether a single controller ACK remains the operational rule.
 - [ ] Add audit/event logging for logins, OB creation, instruction creation and acknowledgements.
