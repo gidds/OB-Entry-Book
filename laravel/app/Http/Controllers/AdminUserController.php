@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\UserCredentialGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,10 @@ use Illuminate\View\View;
 
 class AdminUserController extends Controller
 {
+    public function __construct(private readonly UserCredentialGuard $credentialGuard)
+    {
+    }
+
     public function index(Request $request): View
     {
         $this->authorizeAdmin($request);
@@ -36,6 +41,12 @@ class AdminUserController extends Controller
             && (empty($validated['username']) || empty($validated['password']))) {
             return back()->withInput($request->except(['password', 'pin']))
                 ->withErrors(['user' => 'Managers and admins require a username and password.']);
+        }
+
+        if (! empty($validated['password'])
+            && $this->credentialGuard->passwordIsInUse($validated['password'])) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['password' => 'That password is already in use by another user. Choose a different password.']);
         }
 
         if ($validated['role'] === 'controller' && empty($validated['pin'])) {
@@ -98,6 +109,12 @@ class AdminUserController extends Controller
                 return back()->withInput($request->except(['password', 'pin']))
                     ->withErrors(['user' => 'This management user requires a password.']);
             }
+        }
+
+        if (! empty($validated['password'])
+            && $this->credentialGuard->passwordIsInUse($validated['password'], $user->id)) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['password' => 'That password is already in use by another user. Choose a different password.']);
         }
 
         if ($validated['role'] === 'controller'
