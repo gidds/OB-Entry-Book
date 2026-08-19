@@ -8,16 +8,26 @@
 - Duplicate management-password prevention in both the admin web interface and `ob:create-user` CLI provisioning.
 - Duplicate controller-PIN prevention in both the admin web interface and `ob:create-user` CLI provisioning.
 - Regression tests covering duplicate password creation/editing, duplicate PIN creation/editing and CLI provisioning.
+- Browser/Windows desktop notifications for newly detected pending management instructions while the OB Book dashboard remains open.
+- Dashboard control for explicitly enabling desktop notification permission.
+- Local notification tracking so an instruction does not repeatedly generate the same desktop alert after dashboard refreshes.
+
+### Changed
+- The existing 30-second dashboard refresh now also detects newly arrived pending management instructions for desktop notification purposes.
+- Desktop management-instruction notifications are deliberately short-lived and explicitly close after approximately 8 seconds rather than remaining over the CCTV/DSS display.
+- Clicking a desktop notification focuses the OB Book window so the operator can attend to the instruction.
 
 ### Security
 - Management passwords must now be unique across user accounts while remaining stored only as hashes.
 - Controller PINs must now be unique across controllers while remaining stored only as hashes.
 - Duplicate credential errors deliberately do not identify which user/controller owns the existing credential.
 - User edits exclude the account being edited from duplicate checks, allowing an unchanged/current credential to be retained or re-entered without a false duplicate error.
+- Desktop notifications do not expose management-instruction content; they only state that a new instruction requires attention in the OB Book.
 
 ### Testing notes
 - PC validation after credential uniqueness changes: **37 tests passed, 120 assertions** in 13.74 seconds.
 - Live browser testing confirmed that editing a controller to use another controller's PIN is rejected without disclosing the owner of that PIN.
+- PC validation after desktop notification support: **38 tests passed, 128 assertions** in 13.88 seconds.
 
 ## 2026-08-15
 
