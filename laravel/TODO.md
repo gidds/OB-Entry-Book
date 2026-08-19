@@ -40,6 +40,9 @@
 - [ ] Keep management/admin functions protected by management authentication even when the request originates from the trusted office public IP.
 - [ ] After operators are comfortable with the new system, require the controller's unique PIN when saving an OB entry so the posting controller is recorded automatically for traceability; do not introduce this requirement during the initial familiarisation period.
 - [ ] Keep the existing controller PIN acknowledgement flow for management instructions.
+- [ ] Add credential uniqueness checks to user creation/editing: prevent two controller accounts from sharing the same PIN and prevent two management/admin accounts from sharing the same password.
+- [ ] When a manager/admin sets or changes a password or controller PIN, compare the proposed credential against the other active users' hashed credentials and show a clear validation error if it is already in use; never store or display plaintext credentials for this check.
+- [ ] Add tests covering duplicate controller PIN and duplicate management/admin password rejection during both user creation and credential changes.
 - [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
 - [ ] Add customer filter to OB history/dashboard.
 - [ ] Keep the operator Customer/Site field as simple free text rather than forcing a dropdown/autocomplete workflow.
