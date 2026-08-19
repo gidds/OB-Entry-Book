@@ -156,4 +156,24 @@ class ManagementFlowTest extends TestCase
         $response->assertSeeText($acknowledged->instruction_text);
         $response->assertSeeText('Acknowledged by Controller One');
     }
+
+    public function test_dashboard_includes_desktop_notification_hooks_for_pending_instructions(): void
+    {
+        $instruction = ManagementInstruction::create([
+            'instruction_date' => now()->toDateString(),
+            'manager_name' => 'Manager One',
+            'instruction_text' => 'Sensitive instruction details stay inside the OB Book.',
+        ]);
+
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSeeText('Desktop alerts');
+        $response->assertSeeText('Enable desktop notifications');
+        $response->assertSee('data-instruction-id="'.$instruction->id.'"', false);
+        $response->assertSee('data-pending="1"', false);
+        $response->assertSee('A new instruction requires attention in the OB Book.', false);
+        $response->assertSee('requireInteraction: false', false);
+        $response->assertSee('notificationLifetimeMs = 8000', false);
+    }
 }
