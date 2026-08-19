@@ -50,4 +50,23 @@ class UserProvisioningTest extends TestCase
 
         $this->assertDatabaseCount('users', 0);
     }
+
+    public function test_management_user_cannot_be_provisioned_with_existing_password(): void
+    {
+        User::create([
+            'name' => 'Existing Admin',
+            'username' => 'admin',
+            'password' => 'AlreadyUsedPassword!',
+            'role' => 'admin',
+        ]);
+
+        $this->artisan('ob:create-user', [
+            'name' => 'Second Manager',
+            'role' => 'manager',
+            '--username' => 'secondmanager',
+            '--password' => 'AlreadyUsedPassword!',
+        ])->assertFailed();
+
+        $this->assertDatabaseMissing('users', ['username' => 'secondmanager']);
+    }
 }
