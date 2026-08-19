@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-08-19
+
+### Added
+- Admin user-management web interface for creating and editing controller, manager and administrator accounts.
+- Shared `UserCredentialGuard` service for safely checking proposed credentials against existing hashed credentials.
+- Duplicate management-password prevention in both the admin web interface and `ob:create-user` CLI provisioning.
+- Duplicate controller-PIN prevention in both the admin web interface and `ob:create-user` CLI provisioning.
+- Regression tests covering duplicate password creation/editing, duplicate PIN creation/editing and CLI provisioning.
+
+### Security
+- Management passwords must now be unique across user accounts while remaining stored only as hashes.
+- Controller PINs must now be unique across controllers while remaining stored only as hashes.
+- Duplicate credential errors deliberately do not identify which user/controller owns the existing credential.
+- User edits exclude the account being edited from duplicate checks, allowing an unchanged/current credential to be retained or re-entered without a false duplicate error.
+
+### Testing notes
+- PC validation after credential uniqueness changes: **37 tests passed, 120 assertions** in 13.74 seconds.
+- Live browser testing confirmed that editing a controller to use another controller's PIN is rejected without disclosing the owner of that PIN.
+
 ## 2026-08-15
 
 ### Added
