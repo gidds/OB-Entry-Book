@@ -57,9 +57,19 @@
             @endauth
         </div>
 
-        <div class="panel">
+        <div class="panel" style="margin-bottom:1rem">
+            <strong>Desktop alerts</strong>
+            <div id="notification-status" class="muted" style="margin-top:.35rem">Checking browser notification permission…</div>
+            <button id="enable-notifications" type="button" style="display:none">Enable desktop notifications</button>
+        </div>
+
+        <div class="panel" id="management-instructions">
             @forelse($instructions as $instruction)
-                <article class="entry instruction {{ $instruction->acknowledgements->isEmpty() ? 'pending' : '' }}">
+                <article
+                    class="entry instruction {{ $instruction->acknowledgements->isEmpty() ? 'pending' : '' }}"
+                    data-instruction-id="{{ $instruction->id }}"
+                    data-pending="{{ $instruction->acknowledgements->isEmpty() ? '1' : '0' }}"
+                >
                     <div>
                         <strong>{{ $instruction->manager_name }}</strong>
                         <span class="muted">· {{ $instruction->instruction_date->format('d M Y') }}</span>
@@ -89,8 +99,18 @@
 <script>
     (() => {
         const refreshSeconds = 30;
+        const notificationLifetimeMs = 8000;
+        const notificationStorageKey = 'ob-book-last-notified-instruction-id';
+        const notificationBaselineKey = 'ob-book-notification-baseline-set';
         const editableElements = ['INPUT', 'TEXTAREA', 'SELECT'];
         const countdown = document.getElementById('refresh-countdown');
+        const enableNotifications = document.getElementById('enable-notifications');
+        const notificationStatus = document.getElementById('notification-status');
+        const pendingInstructionIds = Array.from(document.querySelectorAll('[data-instruction-id][data-pending="1"]'))
+            .map((element) => Number(element.dataset.instructionId))
+            .filter(Number.isFinite)
+            .sort((a, b) => b - a);
+        const newestPendingInstructionId = pendingInstructionIds[0] ?? null;
         let remaining = refreshSeconds;
 
         const renderCountdown = () => {
@@ -99,7 +119,100 @@
             }
         };
 
+        const setNotificationStatus = (message) => {
+            if (notificationStatus) {
+                notificationStatus.textContent = message;
+            }
+        };
+
+        const saveNotificationBaseline = () => {
+            if (localStorage.getItem(notificationBaselineKey) === '1') {
+                return;
+            }
+
+            if (newestPendingInstructionId !== null) {
+                localStorage.setItem(notificationStorageKey, String(newestPendingInstructionId));
+            }
+
+            localStorage.setItem(notificationBaselineKey, '1');
+        };
+
+        const notifyForNewInstruction = () => {
+            if (!('Notification' in window) || Notification.permission !== 'granted' || newestPendingInstructionId === null) {
+                return;
+            }
+
+            const previousId = Number(localStorage.getItem(notificationStorageKey) || '0');
+
+            if (newestPendingInstructionId <= previousId) {
+                return;
+            }
+
+            const notification = new Notification('New Management Instruction', {
+                body: 'A new instruction requires attention in the OB Book.',
+                tag: `ob-instruction-${newestPendingInstructionId}`,
+                renotify: false,
+                requireInteraction: false,
+            });
+
+            localStorage.setItem(notificationStorageKey, String(newestPendingInstructionId));
+
+            window.setTimeout(() => notification.close(), notificationLifetimeMs);
+
+            notification.onclick = () => {
+                window.focus();
+                notification.close();
+            };
+        };
+
+        const renderNotificationControls = () => {
+            if (!('Notification' in window)) {
+                setNotificationStatus('Desktop notifications are not supported by this browser.');
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                setNotificationStatus('Desktop notifications are enabled.');
+                if (enableNotifications) {
+                    enableNotifications.style.display = 'none';
+                }
+                saveNotificationBaseline();
+                notifyForNewInstruction();
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                setNotificationStatus('Desktop notifications are blocked in the browser/site settings.');
+                if (enableNotifications) {
+                    enableNotifications.style.display = 'none';
+                }
+                return;
+            }
+
+            setNotificationStatus('Desktop notifications are not enabled yet.');
+            if (enableNotifications) {
+                enableNotifications.style.display = 'inline-block';
+            }
+        };
+
+        if (enableNotifications) {
+            enableNotifications.addEventListener('click', async () => {
+                if (!('Notification' in window)) {
+                    return;
+                }
+
+                const permission = await Notification.requestPermission();
+
+                if (permission === 'granted') {
+                    saveNotificationBaseline();
+                }
+
+                renderNotificationControls();
+            });
+        }
+
         renderCountdown();
+        renderNotificationControls();
 
         window.setInterval(() => {
             const active = document.activeElement;
