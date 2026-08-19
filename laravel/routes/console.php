@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Services\LegacyXmlImporter;
+use App\Services\UserCredentialGuard;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -32,7 +33,7 @@ Artisan::command('ob:import-legacy {--path= : Directory containing entries.xml, 
     }
 })->purpose('Import the preserved legacy XML into the Laravel database without modifying XML files');
 
-Artisan::command('ob:create-user {name} {role=controller : controller, manager or admin} {--username=} {--password=} {--pin=}', function () {
+Artisan::command('ob:create-user {name} {role=controller : controller, manager or admin} {--username=} {--password=} {--pin=}', function (UserCredentialGuard $credentialGuard) {
     $role = strtolower((string) $this->argument('role'));
 
     if (! in_array($role, ['controller', 'manager', 'admin'], true)) {
@@ -50,6 +51,11 @@ Artisan::command('ob:create-user {name} {role=controller : controller, manager o
 
         if (! $username || ! $password) {
             $this->error('Management users require a username and password.');
+            return 1;
+        }
+
+        if ($credentialGuard->passwordIsInUse($password)) {
+            $this->error('That password is already in use by another user. Choose a different password.');
             return 1;
         }
     }
