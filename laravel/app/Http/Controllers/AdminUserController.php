@@ -43,6 +43,16 @@ class AdminUserController extends Controller
                 ->withErrors(['user' => 'Controllers require a PIN.']);
         }
 
+        if (! empty($validated['password']) && $this->credentialIsInUse($validated['password'], 'password')) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['password' => 'This password is already in use by another management user. Choose a unique password.']);
+        }
+
+        if (! empty($validated['pin']) && $this->credentialIsInUse($validated['pin'], 'pin_hash')) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['pin' => 'This PIN is already assigned to another controller. Choose a unique PIN.']);
+        }
+
         User::create([
             'name' => $validated['name'],
             'role' => $validated['role'],
@@ -107,6 +117,16 @@ class AdminUserController extends Controller
                 ->withErrors(['user' => 'This controller requires a PIN.']);
         }
 
+        if (! empty($validated['password']) && $this->credentialIsInUse($validated['password'], 'password', $user->id)) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['password' => 'This password is already in use by another management user. Choose a unique password.']);
+        }
+
+        if (! empty($validated['pin']) && $this->credentialIsInUse($validated['pin'], 'pin_hash', $user->id)) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['pin' => 'This PIN is already assigned to another controller. Choose a unique PIN.']);
+        }
+
         $user->name = $validated['name'];
         $user->role = $validated['role'];
         $user->username = $validated['username'] ?: null;
@@ -123,6 +143,15 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('status', $user->name.' updated successfully.');
+    }
+
+    private function credentialIsInUse(string $credential, string $column, ?int $ignoreUserId = null): bool
+    {
+        return User::query()
+            ->when($ignoreUserId !== null, fn ($query) => $query->whereKeyNot($ignoreUserId))
+            ->whereNotNull($column)
+            ->get([$column])
+            ->contains(fn (User $otherUser) => Hash::check($credential, $otherUser->{$column}));
     }
 
     private function authorizeAdmin(Request $request): void
