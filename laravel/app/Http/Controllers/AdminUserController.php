@@ -54,6 +54,13 @@ class AdminUserController extends Controller
                 ->withErrors(['user' => 'Controllers require a PIN.']);
         }
 
+        if ($validated['role'] === 'controller'
+            && ! empty($validated['pin'])
+            && $this->credentialGuard->pinIsInUse($validated['pin'])) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['pin' => 'That PIN is already assigned to another controller. Choose a different PIN.']);
+        }
+
         User::create([
             'name' => $validated['name'],
             'role' => $validated['role'],
@@ -122,6 +129,13 @@ class AdminUserController extends Controller
             && empty($validated['pin'])) {
             return back()->withInput($request->except(['password', 'pin']))
                 ->withErrors(['user' => 'This controller requires a PIN.']);
+        }
+
+        if ($validated['role'] === 'controller'
+            && ! empty($validated['pin'])
+            && $this->credentialGuard->pinIsInUse($validated['pin'], $user->id)) {
+            return back()->withInput($request->except(['password', 'pin']))
+                ->withErrors(['pin' => 'That PIN is already assigned to another controller. Choose a different PIN.']);
         }
 
         $user->name = $validated['name'];
