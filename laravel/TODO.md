@@ -7,7 +7,6 @@
 - [ ] Create a new OB entry after legacy import and verify the monthly sequence continues correctly from imported historical data.
 - [ ] Test management login, instruction creation, logout and controller PIN acknowledgement through the browser.
 - [ ] Review and remove the temporary `laravel-rebuild-runtime-temp` branch created during connector testing.
-- [ ] Add a small admin/user-management web interface if command-line provisioning proves inconvenient.
 
 ## Completed core migration
 - [x] Add SQLite database/bootstrap handling for development and tests.
@@ -26,10 +25,17 @@
 - [x] Add tests proving XML import never modifies legacy XML files.
 - [x] Add `--dry-run` legacy import mode.
 - [x] Add secure CLI provisioning for controllers/managers/admins.
+- [x] Add admin/user-management web interface for creating and editing controllers, managers and admins.
+- [x] Prevent duplicate management passwords without revealing which account owns the existing password.
+- [x] Prevent duplicate controller PINs without revealing which controller owns the existing PIN.
+- [x] Apply duplicate credential protection to both the admin web interface and `ob:create-user` CLI provisioning.
+- [x] Add regression tests for duplicate password/PIN creation and editing while allowing a user's own existing credential during edit.
 - [x] Add CI environment preparation so tests do not warn about missing `.env`.
 - [x] Confirm full GitHub Actions suite is green after sequence/search/provisioning changes.
 - [x] Validate the full Laravel test suite on Samsung S23 Ultra/Termux: 25 tests, 76 assertions, all passing.
 - [x] Validate the real legacy XML dry-run on Samsung/Termux: 2 operators, 15 OB entries and 15 instructions parsed successfully.
+- [x] Validate credential uniqueness changes on PC: 37 tests, 120 assertions, all passing.
+- [x] Live-test duplicate controller PIN protection: duplicate PIN edit rejected without disclosing the owning controller.
 
 ## Next functional work
 - [ ] Add a control-room login layer so unauthenticated visitors cannot view OB entries or management instructions; controllers use their existing PIN credentials and managers/admins retain username/password access.
