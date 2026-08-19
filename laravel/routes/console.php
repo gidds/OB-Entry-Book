@@ -69,6 +69,11 @@ Artisan::command('ob:create-user {name} {role=controller : controller, manager o
         return 1;
     }
 
+    if ($role === 'controller' && $credentialGuard->pinIsInUse($pin)) {
+        $this->error('That PIN is already assigned to another controller. Choose a different PIN.');
+        return 1;
+    }
+
     $user = User::create([
         'name' => (string) $this->argument('name'),
         'username' => $username,
