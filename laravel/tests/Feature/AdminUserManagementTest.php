@@ -113,4 +113,80 @@ class AdminUserManagementTest extends TestCase
 
         $this->assertSame('admin', $admin->fresh()->role);
     }
+
+    public function test_admin_cannot_create_user_with_an_existing_password(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'password' => 'SharedPassword123!',
+            'role' => 'admin',
+        ]);
+
+        $this->actingAs($admin)
+            ->from(route('admin.users.index'))
+            ->post(route('admin.users.store'), [
+                'name' => 'Manager',
+                'role' => 'manager',
+                'username' => 'manager',
+                'password' => 'SharedPassword123!',
+                'pin' => '',
+            ])
+            ->assertRedirect(route('admin.users.index'))
+            ->assertSessionHasErrors('password');
+
+        $this->assertDatabaseMissing('users', ['username' => 'manager']);
+    }
+
+    public function test_admin_cannot_change_user_to_another_users_password(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'password' => 'AdminPassword123!',
+            'role' => 'admin',
+        ]);
+        $manager = User::create([
+            'name' => 'Manager',
+            'username' => 'manager',
+            'password' => 'ManagerPassword123!',
+            'role' => 'manager',
+        ]);
+        $oldPassword = $manager->password;
+
+        $this->actingAs($admin)
+            ->from(route('admin.users.edit', $manager))
+            ->put(route('admin.users.update', $manager), [
+                'name' => 'Manager',
+                'role' => 'manager',
+                'username' => 'manager',
+                'password' => 'AdminPassword123!',
+                'pin' => '',
+            ])
+            ->assertRedirect(route('admin.users.edit', $manager))
+            ->assertSessionHasErrors('password');
+
+        $this->assertSame($oldPassword, $manager->fresh()->password);
+    }
+
+    public function test_user_can_reenter_their_own_current_password_without_duplicate_error(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'password' => 'AdminPassword123!',
+            'role' => 'admin',
+        ]);
+
+        $this->actingAs($admin)
+            ->put(route('admin.users.update', $admin), [
+                'name' => 'Admin',
+                'role' => 'admin',
+                'username' => 'admin',
+                'password' => 'AdminPassword123!',
+                'pin' => '',
+            ])
+            ->assertRedirect(route('admin.users.index'))
+            ->assertSessionDoesntHaveErrors('password');
+    }
 }
