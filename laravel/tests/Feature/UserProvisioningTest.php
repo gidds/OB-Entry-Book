@@ -69,4 +69,21 @@ class UserProvisioningTest extends TestCase
 
         $this->assertDatabaseMissing('users', ['username' => 'secondmanager']);
     }
+
+    public function test_controller_cannot_be_provisioned_with_existing_pin(): void
+    {
+        User::create([
+            'name' => 'Existing Controller',
+            'role' => 'controller',
+            'pin_hash' => Hash::make('2468'),
+        ]);
+
+        $this->artisan('ob:create-user', [
+            'name' => 'Second Controller',
+            'role' => 'controller',
+            '--pin' => '2468',
+        ])->assertFailed();
+
+        $this->assertDatabaseMissing('users', ['name' => 'Second Controller']);
+    }
 }
