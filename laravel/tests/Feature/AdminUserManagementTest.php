@@ -189,4 +189,94 @@ class AdminUserManagementTest extends TestCase
             ->assertRedirect(route('admin.users.index'))
             ->assertSessionDoesntHaveErrors('password');
     }
+
+    public function test_admin_cannot_create_controller_with_an_existing_pin(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'password' => 'AdminPassword123!',
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'Existing Controller',
+            'role' => 'controller',
+            'pin_hash' => Hash::make('2468'),
+        ]);
+
+        $this->actingAs($admin)
+            ->from(route('admin.users.index'))
+            ->post(route('admin.users.store'), [
+                'name' => 'Second Controller',
+                'role' => 'controller',
+                'username' => '',
+                'password' => '',
+                'pin' => '2468',
+            ])
+            ->assertRedirect(route('admin.users.index'))
+            ->assertSessionHasErrors('pin');
+
+        $this->assertDatabaseMissing('users', ['name' => 'Second Controller']);
+    }
+
+    public function test_admin_cannot_change_controller_to_another_controllers_pin(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'password' => 'AdminPassword123!',
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'First Controller',
+            'role' => 'controller',
+            'pin_hash' => Hash::make('1111'),
+        ]);
+        $second = User::create([
+            'name' => 'Second Controller',
+            'role' => 'controller',
+            'pin_hash' => Hash::make('2222'),
+        ]);
+        $oldPinHash = $second->pin_hash;
+
+        $this->actingAs($admin)
+            ->from(route('admin.users.edit', $second))
+            ->put(route('admin.users.update', $second), [
+                'name' => 'Second Controller',
+                'role' => 'controller',
+                'username' => '',
+                'password' => '',
+                'pin' => '1111',
+            ])
+            ->assertRedirect(route('admin.users.edit', $second))
+            ->assertSessionHasErrors('pin');
+
+        $this->assertSame($oldPinHash, $second->fresh()->pin_hash);
+    }
+
+    public function test_controller_can_reenter_their_own_current_pin_without_duplicate_error(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'password' => 'AdminPassword123!',
+            'role' => 'admin',
+        ]);
+        $controller = User::create([
+            'name' => 'Controller',
+            'role' => 'controller',
+            'pin_hash' => Hash::make('6789'),
+        ]);
+
+        $this->actingAs($admin)
+            ->put(route('admin.users.update', $controller), [
+                'name' => 'Controller',
+                'role' => 'controller',
+                'username' => '',
+                'password' => '',
+                'pin' => '6789',
+            ])
+            ->assertRedirect(route('admin.users.index'))
+            ->assertSessionDoesntHaveErrors('pin');
+    }
 }
