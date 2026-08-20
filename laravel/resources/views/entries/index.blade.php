@@ -42,6 +42,29 @@
                 <p>{{ $search !== '' ? 'No OB entries matched your search.' : 'No OB entries yet.' }}</p>
             @endforelse
         </div>
+
+        @if($entries->total() > 0)
+            <div class="panel" style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+                <div class="muted">
+                    Showing {{ $entries->firstItem() }}–{{ $entries->lastItem() }} of {{ $entries->total() }} entries · Page {{ $entries->currentPage() }} of {{ $entries->lastPage() }}
+                </div>
+                @if($entries->hasPages())
+                    <div style="display:flex;gap:.5rem;align-items:center">
+                        @if($entries->onFirstPage())
+                            <span class="muted">Previous</span>
+                        @else
+                            <a class="button" style="margin-top:0" href="{{ $entries->previousPageUrl() }}">Previous</a>
+                        @endif
+
+                        @if($entries->hasMorePages())
+                            <a class="button" style="margin-top:0" href="{{ $entries->nextPageUrl() }}">Next</a>
+                        @else
+                            <span class="muted">Next</span>
+                        @endif
+                    </div>
+                @endif
+            </div>
+        @endif
     </section>
 
     <aside>
