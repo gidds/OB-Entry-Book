@@ -52,4 +52,54 @@ class OccurrenceSearchTest extends TestCase
             ->assertSeeText('Camera incident reported by the controller.')
             ->assertDontSeeText('Delivery received at the main gate.');
     }
+
+    public function test_dashboard_paginates_ob_entries_at_25_per_page(): void
+    {
+        foreach (range(1, 30) as $number) {
+            OccurrenceEntry::create([
+                'ob_number' => ($number + 2).'\\8\\2026',
+                'occurred_on' => '2026-08-20',
+                'customer' => 'Pagination Test',
+                'entry_text' => 'Paginated entry '.$number,
+            ]);
+        }
+
+        $firstPage = $this->get('/');
+
+        $firstPage->assertOk()
+            ->assertSeeText('Paginated entry 30')
+            ->assertSeeText('Paginated entry 6')
+            ->assertDontSeeText('Paginated entry 5')
+            ->assertSeeText('Showing 1–25 of 32 entries')
+            ->assertSeeText('Page 1 of 2')
+            ->assertSee('page=2');
+
+        $secondPage = $this->get('/?page=2');
+
+        $secondPage->assertOk()
+            ->assertSeeText('Paginated entry 5')
+            ->assertSeeText('Paginated entry 1')
+            ->assertSeeText('Delivery received at the main gate.')
+            ->assertSeeText('Camera incident reported by the controller.')
+            ->assertDontSeeText('Paginated entry 6')
+            ->assertSeeText('Showing 26–32 of 32 entries')
+            ->assertSeeText('Page 2 of 2');
+    }
+
+    public function test_search_query_is_preserved_in_pagination_links(): void
+    {
+        foreach (range(1, 30) as $number) {
+            OccurrenceEntry::create([
+                'ob_number' => ($number + 2).'\\8\\2026',
+                'occurred_on' => '2026-08-20',
+                'customer' => 'Paged Customer',
+                'entry_text' => 'Search pagination entry '.$number,
+            ]);
+        }
+
+        $this->get('/?q=Paged+Customer')
+            ->assertOk()
+            ->assertSee('q=Paged%20Customer')
+            ->assertSee('page=2');
+    }
 }
