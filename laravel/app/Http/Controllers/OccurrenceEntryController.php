@@ -26,8 +26,8 @@ class OccurrenceEntryController extends Controller
             })
             ->latest('occurred_on')
             ->latest('id')
-            ->limit(100)
-            ->get();
+            ->paginate(25)
+            ->withQueryString();
 
         return view('entries.index', [
             'entries' => $entries,
