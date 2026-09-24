@@ -37,6 +37,10 @@
                         <div><strong>Customer:</strong> {{ $entry->customer }}</div>
                     @endif
                     <p>{{ $entry->entry_text }}</p>
+                    @if($entry->isEditable())
+                        <a class="button" style="margin-top:0" href="{{ route('entries.edit', $entry) }}">Edit entry</a>
+                        <span class="muted">Available for one hour after posting</span>
+                    @endif
                 </article>
             @empty
                 <p>{{ $search !== '' ? 'No OB entries matched your search.' : 'No OB entries yet.' }}</p>
@@ -121,6 +125,10 @@
 
 <script>
     (() => {
+        @if(session('clear_ob_entry_draft'))
+            localStorage.removeItem('ob-book-entry-draft-v1');
+        @endif
+
         const refreshSeconds = 30;
         const notificationLifetimeMs = 8000;
         const notificationStorageKey = 'ob-book-last-notified-instruction-id';

@@ -27,7 +27,8 @@ class OccurrenceExportController extends Controller
         ]);
 
         $entries = OccurrenceEntry::query()
-            ->whereBetween('occurred_on', [$validated['from_date'], $validated['to_date']])
+            ->whereDate('occurred_on', '>=', $validated['from_date'])
+            ->whereDate('occurred_on', '<=', $validated['to_date'])
             ->orderBy('occurred_on')
             ->orderBy('id')
             ->get();

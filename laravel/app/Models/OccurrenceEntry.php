@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OccurrenceEntry extends Model
 {
+    public const EDIT_WINDOW_MINUTES = 60;
+
     protected $fillable = [
         'ob_number',
         'occurred_on',
@@ -20,5 +22,11 @@ class OccurrenceEntry extends Model
         return [
             'occurred_on' => 'date',
         ];
+    }
+
+    public function isEditable(): bool
+    {
+        return $this->created_at !== null
+            && now()->lt($this->created_at->copy()->addMinutes(self::EDIT_WINDOW_MINUTES));
     }
 }

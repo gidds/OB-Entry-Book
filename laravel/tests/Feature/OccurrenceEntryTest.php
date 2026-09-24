@@ -38,6 +38,7 @@ class OccurrenceEntryTest extends TestCase
         ]);
 
         $response->assertRedirect('/');
+        $response->assertSessionHas('clear_ob_entry_draft', true);
         $this->assertDatabaseHas('occurrence_entries', [
             'ob_number' => '1\\8\\2026',
             'occurred_on' => '2026-08-15 00:00:00',

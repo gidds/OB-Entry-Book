@@ -36,6 +36,13 @@
 - [x] Validate the real legacy XML dry-run on Samsung/Termux: 2 operators, 15 OB entries and 15 instructions parsed successfully.
 - [x] Validate credential uniqueness changes on PC: 37 tests, 120 assertions, all passing.
 - [x] Live-test duplicate controller PIN protection: duplicate PIN edit rejected without disclosing the owning controller.
+- [x] Paginate the OB dashboard at 25 entries per page while preserving search queries.
+- [x] Add mandatory date-range XML export for managers and administrators.
+- [x] Add browser-local OB entry drafts without changing the production database schema.
+- [x] Allow customer/site and entry-text correction for one hour after posting, protected by any valid controller PIN.
+- [x] Keep OB number, occurrence date and original posting time locked during entry correction.
+- [x] Add regression coverage for drafts, timed entry editing, controller PIN validation and locked fields.
+- [x] Validate the full PC test suite after export and entry-editing work: 51 tests, 197 assertions, all passing.
 
 ## Next functional work
 - [ ] Add a control-room login layer so unauthenticated visitors cannot view OB entries or management instructions; controllers use their existing PIN credentials and managers/admins retain username/password access.
@@ -44,10 +51,8 @@
 - [ ] Keep the operator Customer/Site field as simple free text rather than forcing a dropdown/autocomplete workflow.
 - [ ] Add customer/site alias learning: map different spellings, abbreviations and common operator variants to one canonical customer/site for filtering and reports.
 - [ ] Add a manager/admin review area for unknown or ambiguous customer/site names, allowing management to confirm which canonical customer/site each variant belongs to; retain confirmed mappings for future entries.
-- [ ] Add XML export for managers and administrators.
 - [ ] Add manager/admin weekly report export grouped or filtered by canonical site/customer while preserving the operator's original entered text.
 - [ ] Review the old search page in detail for date-range/filter behavior worth carrying forward.
-- [ ] Add pagination rather than the temporary 100-entry dashboard limit.
 - [ ] Add management-instruction history/filtering and optional archived state.
 - [ ] Decide whether every controller must ACK each instruction or whether a single controller ACK remains the operational rule.
 - [ ] Add audit/event logging for logins, OB creation, instruction creation and acknowledgements.

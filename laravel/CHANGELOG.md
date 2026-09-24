@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-09-24
+
+### Added
+- Manager/admin XML export for a mandatory inclusive date range.
+- Browser-local drafts on the Add OB Entry form, including automatic restore and an explicit Clear draft action.
+- One-hour correction window for newly posted OB entries.
+- Controller PIN verification before an entry correction is saved.
+- Feature tests covering browser draft hooks, edit availability, the exact 60-minute lock boundary, valid and invalid controller PINs, and immutable OB number/date fields.
+
+### Changed
+- OB entries now show an Edit entry action only while their one-hour correction window remains open.
+- Entry correction is limited to customer/site and entry text; OB number, occurrence date and original posting time remain unchanged.
+- XML export now applies explicit inclusive From and To date comparisons so entries on the final selected date are included consistently.
+
+### Deployment notes
+- No database migration or production database change is required for browser drafts or timed entry correction.
+- Browser drafts remain on the device/browser where they were entered and are removed when submitted or explicitly cleared.
+- The shared-hosting-specific `public/index.php` bootstrap path remains a deployment-only modification and must be preserved.
+
+### Testing notes
+- PC validation after pulling the export work and adding draft/timed-edit support: **51 tests passed, 197 assertions**.
+
 ## 2026-08-19
 
 ### Added

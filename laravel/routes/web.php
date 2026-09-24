@@ -17,6 +17,8 @@ Route::middleware('installed')->group(function (): void {
     Route::get('/', [OccurrenceEntryController::class, 'index'])->name('entries.index');
     Route::get('/entries/create', [OccurrenceEntryController::class, 'create'])->name('entries.create');
     Route::post('/entries', [OccurrenceEntryController::class, 'store'])->name('entries.store');
+    Route::get('/entries/{entry}/edit', [OccurrenceEntryController::class, 'edit'])->name('entries.edit');
+    Route::put('/entries/{entry}', [OccurrenceEntryController::class, 'update'])->name('entries.update');
     Route::post('/instructions/{instruction}/acknowledge', [InstructionAcknowledgementController::class, 'store'])->name('instructions.acknowledge');
     Route::middleware('guest')->group(function (): void {
         Route::get('/login', [AuthController::class, 'create'])->name('login');
