@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\OccurrenceEntry;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,6 +14,11 @@ class OccurrenceSearchTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->actingAs(User::create([
+            'name' => 'Search Test Controller',
+            'role' => 'controller',
+        ]));
 
         OccurrenceEntry::create([
             'ob_number' => '1\\8\\2026',

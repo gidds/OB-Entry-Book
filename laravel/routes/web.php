@@ -14,17 +14,26 @@ Route::post('/setup/database', [SetupController::class, 'database'])->name('setu
 Route::post('/setup/admin', [SetupController::class, 'admin'])->name('setup.admin');
 
 Route::middleware('installed')->group(function (): void {
-    Route::get('/', [OccurrenceEntryController::class, 'index'])->name('entries.index');
-    Route::get('/entries/create', [OccurrenceEntryController::class, 'create'])->name('entries.create');
-    Route::post('/entries', [OccurrenceEntryController::class, 'store'])->name('entries.store');
-    Route::get('/entries/{entry}/edit', [OccurrenceEntryController::class, 'edit'])->name('entries.edit');
-    Route::put('/entries/{entry}', [OccurrenceEntryController::class, 'update'])->name('entries.update');
-    Route::post('/instructions/{instruction}/acknowledge', [InstructionAcknowledgementController::class, 'store'])->name('instructions.acknowledge');
     Route::middleware('guest')->group(function (): void {
         Route::get('/login', [AuthController::class, 'create'])->name('login');
-        Route::post('/login', [AuthController::class, 'store'])->name('login.store');
+        Route::post('/login', [AuthController::class, 'store'])
+            ->middleware('throttle:5,1')
+            ->name('login.store');
+        Route::post('/login/controller', [AuthController::class, 'storeController'])
+            ->middleware('throttle:5,1')
+            ->name('login.controller');
     });
     Route::middleware('auth')->group(function (): void {
+        Route::get('/', [OccurrenceEntryController::class, 'index'])->name('entries.index');
+        Route::get('/entries/create', [OccurrenceEntryController::class, 'create'])->name('entries.create');
+        Route::post('/entries', [OccurrenceEntryController::class, 'store'])->name('entries.store');
+        Route::get('/entries/{entry}/edit', [OccurrenceEntryController::class, 'edit'])->name('entries.edit');
+        Route::put('/entries/{entry}', [OccurrenceEntryController::class, 'update'])
+            ->middleware('throttle:10,1')
+            ->name('entries.update');
+        Route::post('/instructions/{instruction}/acknowledge', [InstructionAcknowledgementController::class, 'store'])
+            ->middleware('throttle:10,1')
+            ->name('instructions.acknowledge');
         Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
         Route::get('/instructions/create', [ManagementInstructionController::class, 'create'])->name('instructions.create');
         Route::post('/instructions', [ManagementInstructionController::class, 'store'])->name('instructions.store');

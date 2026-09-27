@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,7 +12,12 @@ class SmokeTest extends TestCase
 
     public function test_home_page_boots_successfully(): void
     {
-        $response = $this->get('/');
+        $controller = User::create([
+            'name' => 'Smoke Test Controller',
+            'role' => 'controller',
+        ]);
+
+        $response = $this->actingAs($controller)->get('/');
 
         $response->assertOk();
         $response->assertSeeText('OB Entries');

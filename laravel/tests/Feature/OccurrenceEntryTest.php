@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\OccurrenceEntry;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
@@ -10,6 +11,16 @@ use Tests\TestCase;
 class OccurrenceEntryTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->actingAs(User::create([
+            'name' => 'Entry Test Controller',
+            'role' => 'controller',
+        ]));
+    }
 
     protected function tearDown(): void
     {

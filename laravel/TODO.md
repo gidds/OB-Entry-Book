@@ -43,9 +43,13 @@
 - [x] Keep OB number, occurrence date and original posting time locked during entry correction.
 - [x] Add regression coverage for drafts, timed entry editing, controller PIN validation and locked fields.
 - [x] Validate the full PC test suite after export and entry-editing work: 51 tests, 197 assertions, all passing.
+- [x] Require authentication before viewing, searching, creating, editing or acknowledging OB information.
+- [x] Add controller session login using existing unique hashed PINs while retaining management username/password login.
+- [x] Rate-limit login, entry-edit PIN and instruction-acknowledgement PIN requests.
+- [x] Default production session cookies to HTTPS-only while retaining HttpOnly and SameSite protection.
+- [x] Add authentication-boundary regression coverage and validate the full PC suite: 59 tests, 242 assertions, all passing.
 
 ## Next functional work
-- [ ] Add a control-room login layer so unauthenticated visitors cannot view OB entries or management instructions; controllers use their existing PIN credentials and managers/admins retain username/password access.
 - [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
 - [ ] Add customer filter to OB history/dashboard.
 - [ ] Keep the operator Customer/Site field as simple free text rather than forcing a dropdown/autocomplete workflow.

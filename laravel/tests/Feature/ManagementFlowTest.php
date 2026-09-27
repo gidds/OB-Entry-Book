@@ -37,7 +37,34 @@ class ManagementFlowTest extends TestCase
     {
         $this->get('/login')
             ->assertOk()
+            ->assertSeeText('OB Book Login')
+            ->assertSeeText('Controller Login')
             ->assertSeeText('Management Login');
+    }
+
+    public function test_guest_is_redirected_from_dashboard(): void
+    {
+        $this->get('/')->assertRedirect('/login');
+    }
+
+    public function test_controller_can_log_in_with_pin(): void
+    {
+        $controller = $this->controller();
+
+        $this->post('/login/controller', ['pin' => '2468'])
+            ->assertRedirect('/');
+
+        $this->assertAuthenticatedAs($controller);
+    }
+
+    public function test_invalid_controller_pin_cannot_log_in(): void
+    {
+        $this->controller();
+
+        $this->post('/login/controller', ['pin' => '9999'])
+            ->assertSessionHasErrors('pin');
+
+        $this->assertGuest();
     }
 
     public function test_manager_can_log_in(): void
@@ -97,7 +124,7 @@ class ManagementFlowTest extends TestCase
             'instruction_text' => 'Check gate lock after final patrol.',
         ]);
 
-        $response = $this->post('/instructions/'.$instruction->id.'/acknowledge', [
+        $response = $this->actingAs($controller)->post('/instructions/'.$instruction->id.'/acknowledge', [
             'pin' => '2468',
         ]);
 
@@ -111,14 +138,14 @@ class ManagementFlowTest extends TestCase
 
     public function test_invalid_controller_pin_does_not_acknowledge_instruction(): void
     {
-        $this->controller();
+        $controller = $this->controller();
         $instruction = ManagementInstruction::create([
             'instruction_date' => now()->toDateString(),
             'manager_name' => 'Manager One',
             'instruction_text' => 'Check gate lock after final patrol.',
         ]);
 
-        $response = $this->post('/instructions/'.$instruction->id.'/acknowledge', [
+        $response = $this->actingAs($controller)->post('/instructions/'.$instruction->id.'/acknowledge', [
             'pin' => '9999',
         ]);
 
@@ -148,7 +175,7 @@ class ManagementFlowTest extends TestCase
             'acknowledged_at' => now(),
         ]);
 
-        $response = $this->get('/');
+        $response = $this->actingAs($controller)->get('/');
 
         $response->assertOk();
         $response->assertSeeText($pending->instruction_text);
@@ -159,13 +186,14 @@ class ManagementFlowTest extends TestCase
 
     public function test_dashboard_includes_desktop_notification_hooks_for_pending_instructions(): void
     {
+        $controller = $this->controller();
         $instruction = ManagementInstruction::create([
             'instruction_date' => now()->toDateString(),
             'manager_name' => 'Manager One',
             'instruction_text' => 'Sensitive instruction details stay inside the OB Book.',
         ]);
 
-        $response = $this->get('/');
+        $response = $this->actingAs($controller)->get('/');
 
         $response->assertOk();
         $response->assertSeeText('Desktop alerts');
@@ -175,5 +203,21 @@ class ManagementFlowTest extends TestCase
         $response->assertSee('A new instruction requires attention in the OB Book.', false);
         $response->assertSee('requireInteraction: false', false);
         $response->assertSee('notificationLifetimeMs = 8000', false);
+    }
+
+    public function test_controller_cannot_open_management_instruction_form(): void
+    {
+        $this->actingAs($this->controller())
+            ->get('/instructions/create')
+            ->assertForbidden();
+    }
+
+    public function test_logout_ends_session_and_returns_to_login(): void
+    {
+        $this->actingAs($this->controller())
+            ->post('/logout')
+            ->assertRedirect('/login');
+
+        $this->assertGuest();
     }
 }

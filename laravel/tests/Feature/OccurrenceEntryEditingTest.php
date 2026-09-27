@@ -13,6 +13,17 @@ class OccurrenceEntryEditingTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->actingAs(User::create([
+            'name' => 'Editing Test Session',
+            'role' => 'controller',
+            'pin_hash' => Hash::make('1357'),
+        ]));
+    }
+
     protected function tearDown(): void
     {
         Carbon::setTestNow();

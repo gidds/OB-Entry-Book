@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-09-27
+
+### Added
+- Combined OB Book login screen with controller PIN authentication and management username/password authentication.
+- Server-side authentication boundary around the dashboard, OB search/history, entry creation, timed editing and instruction acknowledgement.
+- Rate limiting for controller and management login attempts, entry-edit PIN confirmation and instruction-acknowledgement PIN confirmation.
+- Authentication-boundary tests covering protected routes, controller PIN login, intended redirects, role restrictions, logout and repeated failed PIN attempts.
+
+### Changed
+- Navigation links for OB entries are now shown only after authentication.
+- Logout now invalidates the session and returns to the login screen.
+- Production session cookies default to HTTPS-only while remaining HttpOnly and SameSite=Lax.
+
+### Security
+- Unauthenticated visitors can no longer view OB entries or management instructions, search history, create entries, edit entries or acknowledge instructions.
+- Controller PINs continue to be verified against their stored hashes and are never stored in session or exposed in the interface.
+- Manager/admin functionality retains its existing role checks after the broader authentication boundary was added.
+
+### Deployment notes
+- No database migration or production database change is required.
+
+### Testing notes
+- PC validation after adding the control-room authentication boundary: **59 tests passed, 242 assertions**.
+
 ## 2026-09-24
 
 ### Added
