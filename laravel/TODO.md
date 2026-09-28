@@ -3,9 +3,9 @@
 ## Current
 - [ ] Re-test a fresh clone/browser boot on the PC using `composer install` then `composer setup`.
 - [ ] On the PC, run the real legacy import and inspect imported OB entries/instructions in the browser.
-- [ ] Provision a test manager and controller with `ob:create-user` and test the complete browser workflow.
+- [ ] Complete the remaining browser workflow with the provisioned local test users: create an OB entry, create a management instruction and acknowledge it with a controller PIN.
 - [ ] Create a new OB entry after legacy import and verify the monthly sequence continues correctly from imported historical data.
-- [ ] Test management login, instruction creation, logout and controller PIN acknowledgement through the browser.
+- [ ] Verify that `robots.txt` is present and served from the live `html/ob-book` public directory.
 - [ ] Review and remove the temporary `laravel-rebuild-runtime-temp` branch created during connector testing.
 
 ## Completed core migration
@@ -49,10 +49,12 @@
 - [x] Default production session cookies to HTTPS-only while retaining HttpOnly and SameSite protection.
 - [x] Add authentication-boundary regression coverage and validate the full PC suite: 59 tests, 242 assertions, all passing.
 - [x] Validate controller PIN login/logout and management login locally through Herd using the SQLite development database.
+- [x] Provision a local test manager and controller with `ob:create-user` for Herd browser testing.
 - [x] Deploy the authentication boundary to Hostinger through FileZilla and verify that unauthenticated users are prompted to log in while existing valid management sessions remain active.
+- [x] Add `noindex`, `nofollow`, `noarchive` and `nosnippet` metadata plus a deny-all `public/robots.txt` for search-engine exclusion.
+- [x] Consolidate `main` and `laravel-rebuild` at merge commit `d89c003` while preserving the production-tested Laravel tree.
 
 ## Next functional work
-- [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
 - [ ] Add customer filter to OB history/dashboard.
 - [ ] Keep the operator Customer/Site field as simple free text rather than forcing a dropdown/autocomplete workflow.
 - [ ] Add customer/site alias learning: map different spellings, abbreviations and common operator variants to one canonical customer/site for filtering and reports.
