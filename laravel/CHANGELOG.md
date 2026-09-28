@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-28
+
+### Deployment notes
+- Deployed the authentication release to the Hostinger production application using a single queued FileZilla transfer.
+- Uploaded only the application authentication files; the production environment, database, storage data and shared-hosting public bootstrap were not replaced.
+- No production database migration or database overwrite was required.
+
+### Verification
+- Verified locally through Herd that controller PIN login/logout and management username/password login work against the SQLite development database.
+- Re-ran the complete suite through Herd PHP: **59 tests passed, 242 assertions**.
+- Confirmed on production that unauthenticated users are redirected to the login screen.
+- Confirmed that existing valid management sessions remain authenticated after deployment, as intended.
+
 ## 2026-09-27
 
 ### Added

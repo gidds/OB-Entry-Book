@@ -48,6 +48,8 @@
 - [x] Rate-limit login, entry-edit PIN and instruction-acknowledgement PIN requests.
 - [x] Default production session cookies to HTTPS-only while retaining HttpOnly and SameSite protection.
 - [x] Add authentication-boundary regression coverage and validate the full PC suite: 59 tests, 242 assertions, all passing.
+- [x] Validate controller PIN login/logout and management login locally through Herd using the SQLite development database.
+- [x] Deploy the authentication boundary to Hostinger through FileZilla and verify that unauthenticated users are prompted to log in while existing valid management sessions remain active.
 
 ## Next functional work
 - [ ] Keep the OB site excluded from search indexing with noindex/robots protection in addition to authentication.
