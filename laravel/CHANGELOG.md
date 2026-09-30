@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-30
+
+### Fixed
+- Redirect unauthenticated browser submissions rejected for stale/missing CSRF tokens to `/login` with "Your session expired. Please sign in again." No rejected input or credentials are flashed or replayed.
+- Keep CSRF verification enabled; authenticated token mismatches remain rejected with 419. Expired-session GET requests retain the existing auth middleware redirect and intended page.
+- Return 419 JSON with the same message and a login destination for asynchronous callers. The current dashboard uses normal forms/links, so no browser timer or script change is required.
+
+### Validation and deployment
+- Add focused feature tests that enable real CSRF verification, including rejected POST/PUT/login/logout requests, message rendering, JSON, auth GET redirects and valid submissions.
+- Upload only `bootstrap/app.php` under the production Laravel application directory. No migrations, dependency changes, public bootstrap replacement or `.env` changes; keep production `SESSION_LIFETIME=480`.
+- After upload, run `php artisan config:clear` and `php artisan view:clear` in the production application directory if cached; avoid broad application cache clearing. Reload PHP workers if the host's OPcache does not validate changed files.
+- Verify with an old form after logging out in another tab, then submit: login redirect/message, no new entry. Verify a fresh login and submission too. Do not shorten the production session lifetime for testing.
+
 ## 2026-09-28
 
 ### Deployment notes

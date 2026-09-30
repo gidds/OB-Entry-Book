@@ -1,6 +1,7 @@
 # TODO
 
 ## Current
+- [ ] Upload the session-expiration fix (`bootstrap/app.php` only) to InterWorx and verify a stale form redirects to login with the expiry message without saving; verify fresh login/submission.
 - [ ] Re-test a fresh clone/browser boot on the PC using `composer install` then `composer setup`.
 - [ ] On the PC, run the real legacy import and inspect imported OB entries/instructions in the browser.
 - [ ] Complete the remaining browser workflow with the provisioned local test users: create an OB entry, create a management instruction and acknowledge it with a controller PIN.
@@ -9,6 +10,7 @@
 - [ ] Review and remove the temporary `laravel-rebuild-runtime-temp` branch created during connector testing.
 
 ## Completed core migration
+- [x] Add graceful unauthenticated stale-CSRF recovery with login message, retain auth GET redirects and CSRF rejection, and cover the real verifier with focused feature tests.
 - [x] Add SQLite database/bootstrap handling for development and tests.
 - [x] Add `OccurrenceEntry` migration and model.
 - [x] Add server-side monthly OB number generation using `number\\month\\year` format.
